@@ -1,0 +1,6 @@
+".\kGen\kGEN.exe" "generate-models.BDR.json" > "..\Contracts\BDR-Contract\models.php"
+".\kGen\kGEN.exe" "generate-models.IMS.json" > "..\Contracts\IMS-Contract\models.php"
+".\kGen\kGEN.exe" "generate-models.SDR.json" > "..\Contracts\SDR-Contract\models.php"
+".\kGen\kGEN.exe" "generate-models.SMS.json" > "..\Contracts\SMS-Contract\models.php"
+".\kGen\kGEN.exe" "generate-models.VDR.json" > "..\Contracts\VDR-Contract\models.php"
+".\kGen\kGEN.exe" "generate-models.WDR.json" > "..\Contracts\WDR-Contract\models.php"
