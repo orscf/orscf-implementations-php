@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF BillingData Contract v1.6.0.0 */
+/* based on ORSCF BillingData Contract v1.6.0.11538 */
 
 use \MedicalResearch\BillingData\Model;
 

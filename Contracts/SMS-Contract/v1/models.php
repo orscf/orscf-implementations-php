@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF StudyManagement Contract v1.6.1.0 */
+/* based on ORSCF StudyManagement Contract v1.6.1.11538 */
 
 use \MedicalResearch\StudyManagement\Model;
 
@@ -22,9 +22,6 @@ namespace MedicalResearch\StudyManagement\StoreAccess {
     
     #[Required]
     public bool $isArchived;
-    
-    #[Required]
-    public string $ownPatientSdrEndpointUid;
     
   }
   
@@ -50,6 +47,12 @@ namespace MedicalResearch\StudyManagement\StoreAccess {
     
     #[Required]
     public string $useAsConsumingExternalWdr;
+    
+    /*
+    * semicolon separated list of custom role-names
+    */
+    #[Required]
+    public string $customRoles;
     
   }
   
@@ -179,11 +182,10 @@ namespace MedicalResearch\StudyManagement\StoreAccess {
     */
     public string $initiatorRelatedProjectNumber;
     
-    #[Required]
-    public string $originWdrEndpointUid;
-    
-    #[Required]
-    public string $primaryImsEndpointUid;
+    /*
+    * *this field is optional
+    */
+    public ?string $originWdrEndpointUid;
     
   }
   
@@ -258,6 +260,12 @@ namespace MedicalResearch\StudyManagement\StoreAccess {
     #[Required]
     public string $siteUid;
     
+    /*
+    * semicolon separated list of custom role-names
+    */
+    #[Required]
+    public string $customRoles;
+    
   }
   
   public class StudyRelatedSystemAssignment {
@@ -270,6 +278,12 @@ namespace MedicalResearch\StudyManagement\StoreAccess {
     
     #[Required]
     public string $systemEndpointUid;
+    
+    /*
+    * semicolon separated list of custom role-names
+    */
+    #[Required]
+    public string $customRoles;
     
   }
   

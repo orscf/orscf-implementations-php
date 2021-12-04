@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF VisitData Contract v1.6.0.0 */
+/* based on ORSCF VisitData Contract v1.6.0.11538 */
 
 use \MedicalResearch\VisitData\Model;
 
