@@ -4,16 +4,11 @@
   "requireXmlDocForNamespaces": [
     "MedicalResearch.SubjectData.StoreAccess"
   ],
-  "template": "Models",
+  "template": "Wrappers",
   "outputLanguage": "PHP",
   "indentDepthPerLevel": 2,
   "codeGenInfoHeader": "based on ORSCF SubjectData Contract v{InputAssemblyVersion}",
   "outputNamespace": "MedicalResearch.SubjectData.StoreAccess",
   "customImports": [],
-  "modelTypeNameIncludePatterns": [
-    "MedicalResearch.SubjectData.*"
-  ],
-  "generateTypeNamesInPhp": true,
-  "generateDataAnnotationsForLocalModels": false,
-  "generateNavigationAnnotationsForLocalModels": false
+  "generateFaultProperty": true
 }

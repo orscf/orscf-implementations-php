@@ -4,7 +4,7 @@
   "requireXmlDocForNamespaces": [
     "MedicalResearch.BillingData.StoreAccess"
   ],
-  "template": "Models",
+  "template": "Interfaces",
   "outputLanguage": "PHP",
   "indentDepthPerLevel": 2,
   "codeGenInfoHeader": "based on ORSCF BillingData Contract v{InputAssemblyVersion}",
