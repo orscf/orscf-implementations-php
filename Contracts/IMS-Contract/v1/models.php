@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF IdentityManagement Contract v1.6.0.11538 */
+/* based on ORSCF IdentityManagement Contract v1.6.0.11588 */
 
 use \MedicalResearch\IdentityManagement\Model;
 use \MedicalResearch\IdentityManagement\StoreAccess;
