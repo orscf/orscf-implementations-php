@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF IdentityManagement Contract v1.6.0.0 */
+/* based on ORSCF IdentityManagement Contract v1.7.0.0 */
 
 use \MedicalResearch\IdentityManagement\Model;
 use \MedicalResearch\IdentityManagement\StoreAccess;
@@ -20,6 +20,8 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
     
     public string $identifierValue;
     
+    public string $researchStudyUid;
+    
   }
   
   /*
@@ -39,7 +41,23 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
     /*
     * the institute which is executing the study (this should be an invariant technical representation of the company name or a guid)
     */
-    public string $executingInstituteIdentifier;
+    public string $siteUid;
+    
+    public string $researchStudyUid;
+    
+  }
+  
+  public class StudyScope {
+    
+    /*
+    * the official invariant name of the study as given by the sponsor
+    */
+    public string $researchStudyUid;
+    
+    /*
+    * for example "Screening-Number" or "Randomization-Number"
+    */
+    public string $participantIdentifierSemantic;
     
     /*
     * *this field has a max length of 100
@@ -50,32 +68,6 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
     * *this field has a max length of 20
     */
     public string $studyWorkflowVersion;
-    
-  }
-  
-  public class StudyScope {
-    
-    /*
-    * the official invariant name of the study as given by the sponsor *this field has a max length of 100
-    */
-    public string $studyWorkflowName;
-    
-    /*
-    * version of the workflow *this field has a max length of 20
-    */
-    public string $studyWorkflowVersion;
-    
-    /*
-    * for example "Screening-Number" or "Randomization-Number"
-    */
-    public string $participantIdentifierSemantic;
-    
-  }
-  
-  /*
-  * Composite Key, which represents the primary identity of a StudyScope
-  */
-  public class StudyScopeIdentity {
     
   }
   
@@ -166,19 +158,11 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
   public class SubjectParticipation {
     
     /*
-    * identity of the patient which can be a randomization or screening number (the exact semantic is defined per study) *this field has a max length of 50
+    * pseudonym of the patient which can be a randomization or screening number (the exact semantic is defined per study) *this field has a max length of 50
     */
     public string $participantIdentifier;
     
-    /*
-    * *this field has a max length of 100
-    */
-    public string $studyWorkflowName;
-    
-    /*
-    * *this field has a max length of 20
-    */
-    public string $studyWorkflowVersion;
+    public string $researchStudyUid;
     
     public string $creationDateUtc;
     
@@ -188,6 +172,13 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
     * *this field is optional
     */
     public ?string $subjectIdentityRecordId;
+    
+  }
+  
+  /*
+  * Composite Key, which represents the primary identity of a SubjectParticipation
+  */
+  public class SubjectParticipationIdentity {
     
   }
   

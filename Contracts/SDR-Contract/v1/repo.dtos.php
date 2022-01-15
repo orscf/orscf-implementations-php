@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF SubjectData Contract v0.1.0.0 */
+/* based on ORSCF SubjectData Contract v1.7.0.0 */
 
 use \MedicalResearch\SubjectData\Model;
 

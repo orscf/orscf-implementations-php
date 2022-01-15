@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF IdentityManagement Contract v1.6.0.0 */
+/* based on ORSCF IdentityManagement Contract v1.7.0.0 */
 
 use \MedicalResearch\IdentityManagement\Model;
 use \MedicalResearch\IdentityManagement\StoreAccess;
@@ -204,27 +204,27 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
   }
   
   /*
-  * Contains arguments for calling 'GetSubjectParticipationByParticipantIdentifier'.
+  * Contains arguments for calling 'GetSubjectParticipationBySubjectParticipationIdentity'.
   * Method: Loads a specific SubjectParticipation addressed by the given primary identifier. Returns null on failure, or if no record exists with the given identity.
   */
-  public class GetSubjectParticipationByParticipantIdentifierRequest {
+  public class GetSubjectParticipationBySubjectParticipationIdentityRequest {
     
-    // Required Argument for 'GetSubjectParticipationByParticipantIdentifier' (string): identity of the patient which can be a randomization or screening number (the exact semantic is defined per study)
+    // Required Argument for 'GetSubjectParticipationBySubjectParticipationIdentity' (SubjectParticipationIdentity): Composite Key, which represents the primary identity of a SubjectParticipation
     #[Required]
-    public string $participantIdentifier;
+    public SubjectParticipationIdentity $subjectParticipationIdentity;
     
   }
   
   /*
-  * Contains results from calling 'GetSubjectParticipationByParticipantIdentifier'.
+  * Contains results from calling 'GetSubjectParticipationBySubjectParticipationIdentity'.
   * Method: Loads a specific SubjectParticipation addressed by the given primary identifier. Returns null on failure, or if no record exists with the given identity.
   */
-  public class GetSubjectParticipationByParticipantIdentifierResponse {
+  public class GetSubjectParticipationBySubjectParticipationIdentityResponse {
     
     // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
     public string $fault = null;
     
-    // Return-Value of 'GetSubjectParticipationByParticipantIdentifier' (SubjectParticipation)
+    // Return-Value of 'GetSubjectParticipationBySubjectParticipationIdentity' (SubjectParticipation)
     public SubjectParticipation $return;
     
   }
@@ -345,57 +345,57 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
   }
   
   /*
-  * Contains arguments for calling 'UpdateSubjectParticipationByParticipantIdentifier'.
+  * Contains arguments for calling 'UpdateSubjectParticipationBySubjectParticipationIdentity'.
   * Method: Updates all values (which are not "FixedAfterCreation") of the given SubjectParticipation addressed by the supplementary given primary identifier. Returns false on failure or if no target record was found, otherwise true.
   */
-  public class UpdateSubjectParticipationByParticipantIdentifierRequest {
+  public class UpdateSubjectParticipationBySubjectParticipationIdentityRequest {
     
-    // Required Argument for 'UpdateSubjectParticipationByParticipantIdentifier' (string): identity of the patient which can be a randomization or screening number (the exact semantic is defined per study)
+    // Required Argument for 'UpdateSubjectParticipationBySubjectParticipationIdentity' (SubjectParticipationIdentity): Composite Key, which represents the primary identity of a SubjectParticipation
     #[Required]
-    public string $participantIdentifier;
+    public SubjectParticipationIdentity $subjectParticipationIdentity;
     
-    // Required Argument for 'UpdateSubjectParticipationByParticipantIdentifier' (SubjectParticipation): SubjectParticipation containing the new values (the primary identifier fields within the given SubjectParticipation will be ignored)
+    // Required Argument for 'UpdateSubjectParticipationBySubjectParticipationIdentity' (SubjectParticipation): SubjectParticipation containing the new values (the primary identifier fields within the given SubjectParticipation will be ignored)
     #[Required]
     public SubjectParticipation $subjectParticipation;
     
   }
   
   /*
-  * Contains results from calling 'UpdateSubjectParticipationByParticipantIdentifier'.
+  * Contains results from calling 'UpdateSubjectParticipationBySubjectParticipationIdentity'.
   * Method: Updates all values (which are not "FixedAfterCreation") of the given SubjectParticipation addressed by the supplementary given primary identifier. Returns false on failure or if no target record was found, otherwise true.
   */
-  public class UpdateSubjectParticipationByParticipantIdentifierResponse {
+  public class UpdateSubjectParticipationBySubjectParticipationIdentityResponse {
     
     // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
     public string $fault = null;
     
-    // Return-Value of 'UpdateSubjectParticipationByParticipantIdentifier' (Boolean)
+    // Return-Value of 'UpdateSubjectParticipationBySubjectParticipationIdentity' (Boolean)
     public bool $return;
     
   }
   
   /*
-  * Contains arguments for calling 'DeleteSubjectParticipationByParticipantIdentifier'.
+  * Contains arguments for calling 'DeleteSubjectParticipationBySubjectParticipationIdentity'.
   * Method: Deletes a specific SubjectParticipation addressed by the given primary identifier. Returns false on failure or if no target record was found, otherwise true.
   */
-  public class DeleteSubjectParticipationByParticipantIdentifierRequest {
+  public class DeleteSubjectParticipationBySubjectParticipationIdentityRequest {
     
-    // Required Argument for 'DeleteSubjectParticipationByParticipantIdentifier' (string): identity of the patient which can be a randomization or screening number (the exact semantic is defined per study)
+    // Required Argument for 'DeleteSubjectParticipationBySubjectParticipationIdentity' (SubjectParticipationIdentity): Composite Key, which represents the primary identity of a SubjectParticipation
     #[Required]
-    public string $participantIdentifier;
+    public SubjectParticipationIdentity $subjectParticipationIdentity;
     
   }
   
   /*
-  * Contains results from calling 'DeleteSubjectParticipationByParticipantIdentifier'.
+  * Contains results from calling 'DeleteSubjectParticipationBySubjectParticipationIdentity'.
   * Method: Deletes a specific SubjectParticipation addressed by the given primary identifier. Returns false on failure or if no target record was found, otherwise true.
   */
-  public class DeleteSubjectParticipationByParticipantIdentifierResponse {
+  public class DeleteSubjectParticipationBySubjectParticipationIdentityResponse {
     
     // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
     public string $fault = null;
     
-    // Return-Value of 'DeleteSubjectParticipationByParticipantIdentifier' (Boolean)
+    // Return-Value of 'DeleteSubjectParticipationBySubjectParticipationIdentity' (Boolean)
     public bool $return;
     
   }
@@ -598,27 +598,27 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
   }
   
   /*
-  * Contains arguments for calling 'GetStudyScopeByStudyScopeIdentity'.
+  * Contains arguments for calling 'GetStudyScopeByResearchStudyUid'.
   * Method: Loads a specific StudyScope addressed by the given primary identifier. Returns null on failure, or if no record exists with the given identity.
   */
-  public class GetStudyScopeByStudyScopeIdentityRequest {
+  public class GetStudyScopeByResearchStudyUidRequest {
     
-    // Required Argument for 'GetStudyScopeByStudyScopeIdentity' (StudyScopeIdentity): Composite Key, which represents the primary identity of a StudyScope
+    // Required Argument for 'GetStudyScopeByResearchStudyUid' (string): the official invariant name of the study as given by the sponsor
     #[Required]
-    public StudyScopeIdentity $studyScopeIdentity;
+    public string $researchStudyUid;
     
   }
   
   /*
-  * Contains results from calling 'GetStudyScopeByStudyScopeIdentity'.
+  * Contains results from calling 'GetStudyScopeByResearchStudyUid'.
   * Method: Loads a specific StudyScope addressed by the given primary identifier. Returns null on failure, or if no record exists with the given identity.
   */
-  public class GetStudyScopeByStudyScopeIdentityResponse {
+  public class GetStudyScopeByResearchStudyUidResponse {
     
     // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
     public string $fault = null;
     
-    // Return-Value of 'GetStudyScopeByStudyScopeIdentity' (StudyScope)
+    // Return-Value of 'GetStudyScopeByResearchStudyUid' (StudyScope)
     public StudyScope $return;
     
   }
@@ -739,57 +739,57 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
   }
   
   /*
-  * Contains arguments for calling 'UpdateStudyScopeByStudyScopeIdentity'.
+  * Contains arguments for calling 'UpdateStudyScopeByResearchStudyUid'.
   * Method: Updates all values (which are not "FixedAfterCreation") of the given StudyScope addressed by the supplementary given primary identifier. Returns false on failure or if no target record was found, otherwise true.
   */
-  public class UpdateStudyScopeByStudyScopeIdentityRequest {
+  public class UpdateStudyScopeByResearchStudyUidRequest {
     
-    // Required Argument for 'UpdateStudyScopeByStudyScopeIdentity' (StudyScopeIdentity): Composite Key, which represents the primary identity of a StudyScope
+    // Required Argument for 'UpdateStudyScopeByResearchStudyUid' (string): the official invariant name of the study as given by the sponsor
     #[Required]
-    public StudyScopeIdentity $studyScopeIdentity;
+    public string $researchStudyUid;
     
-    // Required Argument for 'UpdateStudyScopeByStudyScopeIdentity' (StudyScope): StudyScope containing the new values (the primary identifier fields within the given StudyScope will be ignored)
+    // Required Argument for 'UpdateStudyScopeByResearchStudyUid' (StudyScope): StudyScope containing the new values (the primary identifier fields within the given StudyScope will be ignored)
     #[Required]
     public StudyScope $studyScope;
     
   }
   
   /*
-  * Contains results from calling 'UpdateStudyScopeByStudyScopeIdentity'.
+  * Contains results from calling 'UpdateStudyScopeByResearchStudyUid'.
   * Method: Updates all values (which are not "FixedAfterCreation") of the given StudyScope addressed by the supplementary given primary identifier. Returns false on failure or if no target record was found, otherwise true.
   */
-  public class UpdateStudyScopeByStudyScopeIdentityResponse {
+  public class UpdateStudyScopeByResearchStudyUidResponse {
     
     // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
     public string $fault = null;
     
-    // Return-Value of 'UpdateStudyScopeByStudyScopeIdentity' (Boolean)
+    // Return-Value of 'UpdateStudyScopeByResearchStudyUid' (Boolean)
     public bool $return;
     
   }
   
   /*
-  * Contains arguments for calling 'DeleteStudyScopeByStudyScopeIdentity'.
+  * Contains arguments for calling 'DeleteStudyScopeByResearchStudyUid'.
   * Method: Deletes a specific StudyScope addressed by the given primary identifier. Returns false on failure or if no target record was found, otherwise true.
   */
-  public class DeleteStudyScopeByStudyScopeIdentityRequest {
+  public class DeleteStudyScopeByResearchStudyUidRequest {
     
-    // Required Argument for 'DeleteStudyScopeByStudyScopeIdentity' (StudyScopeIdentity): Composite Key, which represents the primary identity of a StudyScope
+    // Required Argument for 'DeleteStudyScopeByResearchStudyUid' (string): the official invariant name of the study as given by the sponsor
     #[Required]
-    public StudyScopeIdentity $studyScopeIdentity;
+    public string $researchStudyUid;
     
   }
   
   /*
-  * Contains results from calling 'DeleteStudyScopeByStudyScopeIdentity'.
+  * Contains results from calling 'DeleteStudyScopeByResearchStudyUid'.
   * Method: Deletes a specific StudyScope addressed by the given primary identifier. Returns false on failure or if no target record was found, otherwise true.
   */
-  public class DeleteStudyScopeByStudyScopeIdentityResponse {
+  public class DeleteStudyScopeByResearchStudyUidResponse {
     
     // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
     public string $fault = null;
     
-    // Return-Value of 'DeleteStudyScopeByStudyScopeIdentity' (Boolean)
+    // Return-Value of 'DeleteStudyScopeByResearchStudyUid' (Boolean)
     public bool $return;
     
   }

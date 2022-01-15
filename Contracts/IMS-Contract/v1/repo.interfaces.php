@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF IdentityManagement Contract v1.6.0.0 */
+/* based on ORSCF IdentityManagement Contract v1.7.0.0 */
 
 use \MedicalResearch\IdentityManagement\Model;
 use \MedicalResearch\IdentityManagement\StoreAccess;
@@ -69,9 +69,9 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
     /*
     * Loads a specific SubjectParticipation addressed by the given primary identifier. Returns null on failure, or if no record exists with the given identity.
     *
-    * @param $participantIdentifier identity of the patient which can be a randomization or screening number (the exact semantic is defined per study)
+    * @param $subjectParticipationIdentity Composite Key, which represents the primary identity of a SubjectParticipation
     */
-    function GetSubjectParticipationByParticipantIdentifier(string $participantIdentifier): GetSubjectParticipationByParticipantIdentifierResponse;
+    function GetSubjectParticipationBySubjectParticipationIdentity(SubjectParticipationIdentity $subjectParticipationIdentity): GetSubjectParticipationBySubjectParticipationIdentityResponse;
     
     /*
     * Loads SubjectParticipations.
@@ -108,17 +108,17 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
     /*
     * Updates all values (which are not "FixedAfterCreation") of the given SubjectParticipation addressed by the supplementary given primary identifier. Returns false on failure or if no target record was found, otherwise true.
     *
-    * @param $participantIdentifier identity of the patient which can be a randomization or screening number (the exact semantic is defined per study)
+    * @param $subjectParticipationIdentity Composite Key, which represents the primary identity of a SubjectParticipation
     * @param $subjectParticipation SubjectParticipation containing the new values (the primary identifier fields within the given SubjectParticipation will be ignored)
     */
-    function UpdateSubjectParticipationByParticipantIdentifier(string $participantIdentifier, SubjectParticipation $subjectParticipation): UpdateSubjectParticipationByParticipantIdentifierResponse;
+    function UpdateSubjectParticipationBySubjectParticipationIdentity(SubjectParticipationIdentity $subjectParticipationIdentity, SubjectParticipation $subjectParticipation): UpdateSubjectParticipationBySubjectParticipationIdentityResponse;
     
     /*
     * Deletes a specific SubjectParticipation addressed by the given primary identifier. Returns false on failure or if no target record was found, otherwise true.
     *
-    * @param $participantIdentifier identity of the patient which can be a randomization or screening number (the exact semantic is defined per study)
+    * @param $subjectParticipationIdentity Composite Key, which represents the primary identity of a SubjectParticipation
     */
-    function DeleteSubjectParticipationByParticipantIdentifier(string $participantIdentifier): DeleteSubjectParticipationByParticipantIdentifierResponse;
+    function DeleteSubjectParticipationBySubjectParticipationIdentity(SubjectParticipationIdentity $subjectParticipationIdentity): DeleteSubjectParticipationBySubjectParticipationIdentityResponse;
     
   }
   
@@ -185,9 +185,9 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
     /*
     * Loads a specific StudyScope addressed by the given primary identifier. Returns null on failure, or if no record exists with the given identity.
     *
-    * @param $studyScopeIdentity Composite Key, which represents the primary identity of a StudyScope
+    * @param $researchStudyUid the official invariant name of the study as given by the sponsor
     */
-    function GetStudyScopeByStudyScopeIdentity(StudyScopeIdentity $studyScopeIdentity): GetStudyScopeByStudyScopeIdentityResponse;
+    function GetStudyScopeByResearchStudyUid(string $researchStudyUid): GetStudyScopeByResearchStudyUidResponse;
     
     /*
     * Loads StudyScopes.
@@ -224,17 +224,17 @@ namespace MedicalResearch\IdentityManagement\StoreAccess {
     /*
     * Updates all values (which are not "FixedAfterCreation") of the given StudyScope addressed by the supplementary given primary identifier. Returns false on failure or if no target record was found, otherwise true.
     *
-    * @param $studyScopeIdentity Composite Key, which represents the primary identity of a StudyScope
+    * @param $researchStudyUid the official invariant name of the study as given by the sponsor
     * @param $studyScope StudyScope containing the new values (the primary identifier fields within the given StudyScope will be ignored)
     */
-    function UpdateStudyScopeByStudyScopeIdentity(StudyScopeIdentity $studyScopeIdentity, StudyScope $studyScope): UpdateStudyScopeByStudyScopeIdentityResponse;
+    function UpdateStudyScopeByResearchStudyUid(string $researchStudyUid, StudyScope $studyScope): UpdateStudyScopeByResearchStudyUidResponse;
     
     /*
     * Deletes a specific StudyScope addressed by the given primary identifier. Returns false on failure or if no target record was found, otherwise true.
     *
-    * @param $studyScopeIdentity Composite Key, which represents the primary identity of a StudyScope
+    * @param $researchStudyUid the official invariant name of the study as given by the sponsor
     */
-    function DeleteStudyScopeByStudyScopeIdentity(StudyScopeIdentity $studyScopeIdentity): DeleteStudyScopeByStudyScopeIdentityResponse;
+    function DeleteStudyScopeByResearchStudyUid(string $researchStudyUid): DeleteStudyScopeByResearchStudyUidResponse;
     
   }
   

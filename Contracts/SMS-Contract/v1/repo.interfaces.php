@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF StudyManagement Contract v1.6.1.0 */
+/* based on ORSCF StudyManagement Contract v1.7.0.0 */
 
 use \MedicalResearch\StudyManagement\Model;
 
