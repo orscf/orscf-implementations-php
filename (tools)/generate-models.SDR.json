@@ -8,8 +8,9 @@
   "outputLanguage": "PHP",
   "indentDepthPerLevel": 2,
   "codeGenInfoHeader": "based on ORSCF SubjectData Contract v{InputAssemblyVersion}",
-  "outputNamespace": "MedicalResearch.SubjectData.StoreAccess",
+  "outputNamespace": "",
   "customImports": [],
+  "writeCustomImportsOnly": true,
   "modelTypeNameIncludePatterns": [
     "MedicalResearch.SubjectData.*"
   ],

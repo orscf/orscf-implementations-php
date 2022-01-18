@@ -1,185 +1,48 @@
 <?php
 /* based on ORSCF IdentityManagement Contract v1.7.0.0 */
 
-use \MedicalResearch\IdentityManagement\Model;
-use \MedicalResearch\IdentityManagement\StoreAccess;
 
-namespace MedicalResearch\IdentityManagement\StoreAccess {
+public class ExtendedFieldDescriptor {
   
-  public class AdditionalSubjectParticipationIdentifier {
-    
-    /*
-    * *this field has a max length of 50
-    */
-    public string $participantIdentifier;
-    
-    /*
-    * *this field has a max length of 30
-    */
-    public string $identifierName;
-    
-    public string $identifierValue;
-    
-    public string $researchStudyUid;
-    
-  }
+  public string $technicalName;
   
-  /*
-  * Composite Key, which represents the primary identity of a AdditionalSubjectParticipationIdentifier
-  */
-  public class AdditionalSubjectParticipationIdentifierIdentity {
-    
-  }
+  public bool $isRequired;
   
-  public class StudyExecutionScope {
-    
-    /*
-    * a global unique id of a concrete study execution (dedicated to a concrete institute) which is usually originated at the primary CRF or study management system ('SMS')
-    */
-    public string $studyExecutionIdentifier;
-    
-    /*
-    * the institute which is executing the study (this should be an invariant technical representation of the company name or a guid)
-    */
-    public string $siteUid;
-    
-    public string $researchStudyUid;
-    
-  }
+  public string $displayLabel;
   
-  public class StudyScope {
-    
-    /*
-    * the official invariant name of the study as given by the sponsor
-    */
-    public string $researchStudyUid;
-    
-    /*
-    * for example "Screening-Number" or "Randomization-Number"
-    */
-    public string $participantIdentifierSemantic;
-    
-    /*
-    * *this field has a max length of 100
-    */
-    public string $studyWorkflowName;
-    
-    /*
-    * *this field has a max length of 20
-    */
-    public string $studyWorkflowVersion;
-    
-  }
+  public string $inputDescription;
   
-  public class SubjectAddress {
-    
-    public string $internalRecordId;
-    
-    public string $street;
-    
-    public string $houseNumber;
-    
-    public string $postCode;
-    
-    public string $city;
-    
-    public string $state;
-    
-    public string $country;
-    
-    /*
-    * *this field is optional (use null as value)
-    */
-    public string $phoneNumber;
-    
-  }
+  public string $regularExpression;
   
-  public class SubjectIdentity {
-    
-    public string $recordId;
-    
-    /*
-    * *this field is optional (use null as value)
-    */
-    public string $firstName;
-    
-    /*
-    * *this field is optional (use null as value)
-    */
-    public string $lastName;
-    
-    /*
-    * 0=Male / 1=Female / 2=Other *this field is optional
-    */
-    public ?int $gender;
-    
-    /*
-    * *this field is optional
-    */
-    public ?string $dateOfBirth;
-    
-    /*
-    * *this field is optional
-    */
-    public ?string $dateOfDeath;
-    
-    /*
-    * can be used to specify the full salutation including all academic grades by a string containing the placeholders: "{G}"=Gender {F}="FirstName" {L}="LastName". If not specified, a generic fallback can be used *this field is optional (use null as value)
-    */
-    public string $fullNamePattern;
-    
-    /*
-    * *this field is optional (use null as value)
-    */
-    public string $language;
-    
-    /*
-    * *this field is optional (use null as value)
-    */
-    public string $notes;
-    
-    /*
-    * *this field is optional (use null as value)
-    */
-    public string $email;
-    
-    /*
-    * *this field is optional (use null as value)
-    */
-    public string $mobileNumber;
-    
-    /*
-    * *this field is optional
-    */
-    public ?string $residentAddressId;
-    
-  }
+}
+
+public class IdentityDetails {
   
-  public class SubjectParticipation {
-    
-    /*
-    * pseudonym of the patient which can be a randomization or screening number (the exact semantic is defined per study) *this field has a max length of 50
-    */
-    public string $participantIdentifier;
-    
-    public string $researchStudyUid;
-    
-    public string $creationDateUtc;
-    
-    public string $createdForStudyExecutionIdentifier;
-    
-    /*
-    * *this field is optional
-    */
-    public ?string $subjectIdentityRecordId;
-    
-  }
+  public string $firstName;
+  
+  public string $lastName;
+  
+  public string $email;
+  
+  public string $phone;
+  
+  public string $street;
+  
+  public string $houseNumber;
+  
+  public string $postCode;
+  
+  public string $city;
+  
+  public string $state;
   
   /*
-  * Composite Key, which represents the primary identity of a SubjectParticipation
+  * two letter ISO code
   */
-  public class SubjectParticipationIdentity {
-    
-  }
+  public string $country;
+  
+  public ?string $dateOfBirth;
+  
+  public ?string $dateOfDeath;
   
 }

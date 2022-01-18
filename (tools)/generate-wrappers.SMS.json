@@ -1,14 +1,21 @@
 ﻿{
   "inputFile": "..\\..\\orscf-implementations-dotnet\\(Stage)\\Bin\\ORSCF.StudyManagement.Contract.dll",
-  "interfaceTypeNamePattern": "MedicalResearch.StudyManagement.StoreAccess.I*",
+  "interfaceTypeNamePattern": "MedicalResearch.StudyManagement.I*Service",
   "requireXmlDocForNamespaces": [
-    "MedicalResearch.StudyManagement.StoreAccess"
+    "MedicalResearch.StudyManagement"
   ],
   "template": "Wrappers",
   "outputLanguage": "PHP",
   "indentDepthPerLevel": 2,
   "codeGenInfoHeader": "based on ORSCF StudyManagement Contract v{InputAssemblyVersion}",
-  "outputNamespace": "MedicalResearch.StudyManagement.StoreAccess",
-  "customImports": [],
-  "generateFaultProperty": true
+  "outputNamespace": "",
+  "customImports": [
+    "'models.php'"
+  ],
+  "writeCustomImportsOnly": true,
+  "nsPrefixForModelTypesUsage": "",
+  "generateFaultProperty": true,
+  "useInterfaceTypeNameToGenerateSubNamespace": false,
+  "removeLeadingCharCountForSubNamespace": 1,
+  "removeTrailingCharCountForSubNamespace": 7,
 }
