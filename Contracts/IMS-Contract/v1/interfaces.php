@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF IdentityManagement Contract v1.7.0.0 */
+/* based on ORSCF IdentityManagement Contract v1.8.0.0 */
 
 include 'models.php';
 

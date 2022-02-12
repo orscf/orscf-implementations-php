@@ -1,8 +1,8 @@
 ﻿{
   "inputFile": "..\\..\\orscf-implementations-dotnet\\(Stage)\\Bin\\ORSCF.StudyManagement.Contract.dll",
-  "interfaceTypeNamePattern": "MedicalResearch.StudyManagement.StoreAccess.I*",
+  "interfaceTypeNamePattern": "MedicalResearch.StudyManagement.I*",
   "requireXmlDocForNamespaces": [
-    "MedicalResearch.StudyManagement.StoreAccess"
+    "MedicalResearch.StudyManagement"
   ],
   "template": "Models",
   "outputLanguage": "PHP",

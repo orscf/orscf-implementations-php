@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF StudyWorkflowDefinition Contract v1.7.0.0 */
+/* based on ORSCF StudyWorkflowDefinition Contract v1.8.0.0 */
 
 
 public class Arm {
@@ -143,6 +143,248 @@ public class DrugApplymentTaskDefinition {
   public float $unitsToApply;
   
   public string $applymentRoute;
+  
+  /*
+  * *this field is optional (use null as value)
+  */
+  public string $importantNotices;
+  
+}
+
+public class ProcedureDefinition {
+  
+  /*
+  * Name of the Definition - INVARIANT! because it is used to generate Identifers for induced executions! *this field has a max length of 50
+  */
+  public string $prodecureDefinitionName;
+  
+  /*
+  * *this field has a max length of 100
+  */
+  public string $studyWorkflowName;
+  
+  /*
+  * *this field has a max length of 20
+  */
+  public string $studyWorkflowVersion;
+  
+  /*
+  * the TaskSchedule which is representing the primary-/entry-workflow (estimated tasks) when executing this visit *this field is optional
+  */
+  public ?string $rootTaskScheduleId;
+  
+  /*
+  * *this field is optional
+  */
+  public ?float $billablePriceOnAbortedExecution;
+  
+  /*
+  * *this field is optional
+  */
+  public ?float $billablePriceOnCompletedExecution;
+  
+  /*
+  * *this field is optional (use null as value)
+  */
+  public string $visitSpecificDocumentationUrl;
+  
+}
+
+public class InducedProcedure {
+  
+  public string $id;
+  
+  public string $procedureScheduleId;
+  
+  /*
+  * estimated scheduling date relative to the scheduling date of the parent ProcedureSchedule
+  */
+  public int $schedulingOffset;
+  
+  /*
+  * 'M'=Months / 'W'=Weeks / 'D'=Days
+  */
+  public string $schedulingOffsetUnit;
+  
+  /*
+  * defines an additional variability RELATIVE to the estimated scheduling date (which is calculated from the offset), in this case the EARLIEST possible date.
+  */
+  public int $schedulingVariabilityBefore;
+  
+  /*
+  * defines an additional variability RELATIVE to the estimated scheduling date (which is calculated from the offset), in this case the LATEST possible date.
+  */
+  public int $schedulingVariabilityAfter;
+  
+  /*
+  * 'M'=Months / 'W'=Weeks / 'D'=Days
+  */
+  public string $schedulingVariabilityUnit;
+  
+  /*
+  * *this field has a max length of 50
+  */
+  public string $prodecureDefinitionName;
+  
+  /*
+  * the name for the induced execution (=VISIT), like 'V0', which is usually defined by the study protocol. if multiple inducements are possible (for example when using cycles), the title should to contain a placeholder (example: 'C{cy}-V0') to prevent from duplicate execution names.
+  */
+  public string $uniqueExecutionName;
+  
+  /*
+  * defines, if the study protocol tolerates this execution to be 'skipped' (if not, a missed execution is treated as 'lost' and can cause the exclusion of the participant)
+  */
+  public bool $skipable;
+  
+  public string $eventOnSkip;
+  
+  public string $eventOnLost;
+  
+  /*
+  * The Position (1..x) of this inducement within the parent schedule. This value is relevant for addressing predecessors as fixpoint for the offest-calculation. Within one schedule there can only be one inducement for each position! The 0 is reserved for addressing the parent schedule itself and must not be used as well as negative values!
+  */
+  public int $position;
+  
+  /*
+  * 0=InducementOfScheduleOrCycle: when the start of the parent Schedule (for the current cycle) was induced / -1=InducementOfPredessessor: when the direct predecessor procedure or subschedule (based on the 'Position') within the current schedule was induced / 1..x: when the predecessor at the Position within the current schedule, ADRESSED by the given value, was induced *items of sub-schedules are not relevant - when addressing a sub-schedule as predecessor, then only its entry will be used *this behaviour can be concretized via 'SchedulingByEstimate'
+  */
+  public int $schedulingOffsetFixpoint;
+  
+  /*
+  * If set to true, the offset calculation will be based on the ESTIMATED completion of the predecessor (see 'Fixpoint'). Otherwise, when set to false, the offset calculation will be based on the REAL completion (if recorded execution data is available during calculation) of the predecessor. *this will not evaluated, when the 'Fixpoint' is set to 0!
+  */
+  public bool $schedulingByEstimate;
+  
+  /*
+  * The name of a Sub-Study for which this procedure should be induced or empty when its part of the current Arms regular workflow  *this field is optional (use null as value)
+  */
+  public string $dedicatedToSubstudy;
+  
+  /*
+  * Number, which can be used via Placeholder {#} within the UniqueExecutionName and which will automatically increase when using cycles or sub-schedules
+  */
+  public int $visitNumber;
+  
+}
+
+public class InducedSubProcedureSchedule {
+  
+  public string $id;
+  
+  public string $parentProcedureScheduleId;
+  
+  public string $inducedProcedureScheduleId;
+  
+  /*
+  * estimated scheduling date relative to the scheduling date of the parent ProcedureSchedule
+  */
+  public int $schedulingOffset;
+  
+  /*
+  * 'M'=Months / 'W'=Weeks / 'D'=Days
+  */
+  public string $schedulingOffsetUnit;
+  
+  public bool $sharedSkipCounters;
+  
+  public bool $sharedLostCounters;
+  
+  /*
+  * The Position (1..x) of this inducement within the parent schedule. This value is relevant for addressing predecessors as fixpoint for the offest-calculation. Within one schedule there can only be one inducement for each position! The 0 is reserved for addressing the parent schedule itself and must not be used as well as negative values!
+  */
+  public int $position;
+  
+  /*
+  * 0=InducementOfScheduleOrCycle: when the start of the parent Schedule (for the current cycle) was induced / -1=InducementOfPredessessor: when the direct predecessor procedure or subschedule (based on the 'Position') within the current schedule was induced / 1..x: when the predecessor at the Position within the current schedule, ADRESSED by the given value, was induced *items of sub-schedules are not relevant - when addressing a sub-schedule as predecessor, then only its entry will be used *this behaviour can be concretized via 'SchedulingByEstimate'
+  */
+  public int $schedulingOffsetFixpoint;
+  
+  /*
+  * If set to true, the offset calculation will be based on the ESTIMATED completion of the predecessor (see 'Fixpoint'). Otherwise, when set to false, the offset calculation will be based on the REAL completion (if recorded execution data is available during calculation) of the predecessor. *this will not evaluated, when the 'Fixpoint' is set to 0!
+  */
+  public bool $schedulingByEstimate;
+  
+  /*
+  * The name of a Sub-Study for which this schedule should be induced or empty when its part of the current Arms regular workflow  *this field is optional (use null as value)
+  */
+  public string $dedicatedToSubstudy;
+  
+  public int $increaseVisitNumberBase;
+  
+  public bool $inheritVisitNumberBase;
+  
+}
+
+public class ProcedureCycleDefinition {
+  
+  public string $procedureScheduleId;
+  
+  /*
+  * 0=InducementOfScheduleOrCycle: when the start of the last cycle was induced / -1=InducementOfPredessessor: when the last procedure or subschedule (based on the 'Position') of the previous cycle was induced. *items of sub-schedules are not relevant - when addressing a sub-schedule as predecessor, then only its entry will be used *this behaviour can be concretized via 'ReschedulingByEstimate'
+  */
+  public int $reschedulingOffsetFixpoint;
+  
+  /*
+  * estimated scheduling date relative to the ReschedulingBase
+  */
+  public int $reschedulingOffset;
+  
+  /*
+  * 'M'=Months / 'W'=Weeks / 'D'=Days
+  */
+  public string $reschedulingOffsetUnit;
+  
+  /*
+  * number of cycles (of null for a infinite number of cycles) *this field is optional
+  */
+  public ?int $cycleLimit;
+  
+  public bool $sharedSkipCounters;
+  
+  public bool $sharedLostCounters;
+  
+  /*
+  * If set to true, the offset calculation will be based on the ESTIMATED completion of the predecessor (see 'Fixpoint'). Otherwise, when set to false, the offset calculation will be based on the REAL completion (if recorded execution data is available during calculation) of the predecessor. *this will not evaluated, when the 'Fixpoint' is set to 0!
+  */
+  public bool $reschedulingByEstimate;
+  
+  /*
+  * -1: automatic, based on the usage of visit numbers within the schedule
+  */
+  public int $increaseVisitNumberBasePerCycle;
+  
+}
+
+public class TreatmentTaskDefinition {
+  
+  /*
+  * Name of the Definition - INVARIANT! because it is used to generate Identifers for induced executions! *this field has a max length of 50
+  */
+  public string $taskDefinitionName;
+  
+  /*
+  * *this field has a max length of 100
+  */
+  public string $studyWorkflowName;
+  
+  /*
+  * *this field has a max length of 20
+  */
+  public string $studyWorkflowVersion;
+  
+  /*
+  * *this field is optional
+  */
+  public ?float $billablePriceOnCompletedExecution;
+  
+  public string $shortDescription;
+  
+  /*
+  * *this field is optional (use null as value)
+  */
+  public string $taskSpecificDocumentationUrl;
+  
+  public string $treatmentDescription;
   
   /*
   * *this field is optional (use null as value)
@@ -305,131 +547,6 @@ public class InducedDrugApplymentTask {
   
 }
 
-public class InducedProcedure {
-  
-  public string $id;
-  
-  public string $procedureScheduleId;
-  
-  /*
-  * estimated scheduling date relative to the scheduling date of the parent ProcedureSchedule
-  */
-  public int $schedulingOffset;
-  
-  /*
-  * 'M'=Months / 'W'=Weeks / 'D'=Days
-  */
-  public string $schedulingOffsetUnit;
-  
-  /*
-  * defines an additional variability RELATIVE to the estimated scheduling date (which is calculated from the offset), in this case the EARLIEST possible date.
-  */
-  public int $schedulingVariabilityBefore;
-  
-  /*
-  * defines an additional variability RELATIVE to the estimated scheduling date (which is calculated from the offset), in this case the LATEST possible date.
-  */
-  public int $schedulingVariabilityAfter;
-  
-  /*
-  * 'M'=Months / 'W'=Weeks / 'D'=Days
-  */
-  public string $schedulingVariabilityUnit;
-  
-  /*
-  * *this field has a max length of 50
-  */
-  public string $prodecureDefinitionName;
-  
-  /*
-  * the name for the induced execution (=VISIT), like 'V0', which is usually defined by the study protocol. if multiple inducements are possible (for example when using cycles), the title should to contain a placeholder (example: 'C{cy}-V0') to prevent from duplicate execution names.
-  */
-  public string $uniqueExecutionName;
-  
-  /*
-  * defines, if the study protocol tolerates this execution to be 'skipped' (if not, a missed execution is treated as 'lost' and can cause the exclusion of the participant)
-  */
-  public bool $skipable;
-  
-  public string $eventOnSkip;
-  
-  public string $eventOnLost;
-  
-  /*
-  * The Position (1..x) of this inducement within the parent schedule. This value is relevant for addressing predecessors as fixpoint for the offest-calculation. Within one schedule there can only be one inducement for each position! The 0 is reserved for addressing the parent schedule itself and must not be used as well as negative values!
-  */
-  public int $position;
-  
-  /*
-  * 0=InducementOfScheduleOrCycle: when the start of the parent Schedule (for the current cycle) was induced / -1=InducementOfPredessessor: when the direct predecessor procedure or subschedule (based on the 'Position') within the current schedule was induced / 1..x: when the predecessor at the Position within the current schedule, ADRESSED by the given value, was induced *items of sub-schedules are not relevant - when addressing a sub-schedule as predecessor, then only its entry will be used *this behaviour can be concretized via 'SchedulingByEstimate'
-  */
-  public int $schedulingOffsetFixpoint;
-  
-  /*
-  * If set to true, the offset calculation will be based on the ESTIMATED completion of the predecessor (see 'Fixpoint'). Otherwise, when set to false, the offset calculation will be based on the REAL completion (if recorded execution data is available during calculation) of the predecessor. *this will not evaluated, when the 'Fixpoint' is set to 0!
-  */
-  public bool $schedulingByEstimate;
-  
-  /*
-  * The name of a Sub-Study for which this procedure should be induced or empty when its part of the current Arms regular workflow  *this field is optional (use null as value)
-  */
-  public string $dedicatedToSubstudy;
-  
-  /*
-  * Number, which can be used via Placeholder {#} within the UniqueExecutionName and which will automatically increase when using cycles or sub-schedules
-  */
-  public int $visitNumber;
-  
-}
-
-public class InducedSubProcedureSchedule {
-  
-  public string $id;
-  
-  public string $parentProcedureScheduleId;
-  
-  public string $inducedProcedureScheduleId;
-  
-  /*
-  * estimated scheduling date relative to the scheduling date of the parent ProcedureSchedule
-  */
-  public int $schedulingOffset;
-  
-  /*
-  * 'M'=Months / 'W'=Weeks / 'D'=Days
-  */
-  public string $schedulingOffsetUnit;
-  
-  public bool $sharedSkipCounters;
-  
-  public bool $sharedLostCounters;
-  
-  /*
-  * The Position (1..x) of this inducement within the parent schedule. This value is relevant for addressing predecessors as fixpoint for the offest-calculation. Within one schedule there can only be one inducement for each position! The 0 is reserved for addressing the parent schedule itself and must not be used as well as negative values!
-  */
-  public int $position;
-  
-  /*
-  * 0=InducementOfScheduleOrCycle: when the start of the parent Schedule (for the current cycle) was induced / -1=InducementOfPredessessor: when the direct predecessor procedure or subschedule (based on the 'Position') within the current schedule was induced / 1..x: when the predecessor at the Position within the current schedule, ADRESSED by the given value, was induced *items of sub-schedules are not relevant - when addressing a sub-schedule as predecessor, then only its entry will be used *this behaviour can be concretized via 'SchedulingByEstimate'
-  */
-  public int $schedulingOffsetFixpoint;
-  
-  /*
-  * If set to true, the offset calculation will be based on the ESTIMATED completion of the predecessor (see 'Fixpoint'). Otherwise, when set to false, the offset calculation will be based on the REAL completion (if recorded execution data is available during calculation) of the predecessor. *this will not evaluated, when the 'Fixpoint' is set to 0!
-  */
-  public bool $schedulingByEstimate;
-  
-  /*
-  * The name of a Sub-Study for which this schedule should be induced or empty when its part of the current Arms regular workflow  *this field is optional (use null as value)
-  */
-  public string $dedicatedToSubstudy;
-  
-  public int $increaseVisitNumberBase;
-  
-  public bool $inheritVisitNumberBase;
-  
-}
-
 public class InducedSubTaskSchedule {
   
   public string $id;
@@ -555,22 +672,22 @@ public class InducedTreatmentTask {
   
 }
 
-public class ProcedureCycleDefinition {
+public class TaskCycleDefinition {
   
-  public string $procedureScheduleId;
+  public string $taskScheduleId;
   
   /*
-  * 0=InducementOfScheduleOrCycle: when the start of the last cycle was induced / -1=InducementOfPredessessor: when the last procedure or subschedule (based on the 'Position') of the previous cycle was induced. *items of sub-schedules are not relevant - when addressing a sub-schedule as predecessor, then only its entry will be used *this behaviour can be concretized via 'ReschedulingByEstimate'
+  * 0=InducementOfScheduleOrCycle: when the start of the last cycle was induced / -1=InducementOfPredessessor: when the last task or subschedule (based on the 'Position') of the previous cycle was induced. *items of sub-schedules are not relevant - when addressing a sub-schedule as predecessor, then only its entry will be used *this behaviour can be concretized via 'ReschedulingByEstimate'
   */
   public int $reschedulingOffsetFixpoint;
   
   /*
-  * estimated scheduling date relative to the ReschedulingBase
+  * estimated scheduling time relative to the ReschedulingBase
   */
   public int $reschedulingOffset;
   
   /*
-  * 'M'=Months / 'W'=Weeks / 'D'=Days
+  * 'h'=Hours / 'm'=Minutes / 's'=Seconds
   */
   public string $reschedulingOffsetUnit;
   
@@ -589,18 +706,18 @@ public class ProcedureCycleDefinition {
   public bool $reschedulingByEstimate;
   
   /*
-  * -1: automatic, based on the usage of visit numbers within the schedule
+  * -1: automatic, based on the usage of task numbers within the schedule
   */
-  public int $increaseVisitNumberBasePerCycle;
+  public int $increaseTaskNumberBasePerCycle;
   
 }
 
-public class ProcedureDefinition {
+public class StudyEvent {
   
   /*
-  * Name of the Definition - INVARIANT! because it is used to generate Identifers for induced executions! *this field has a max length of 50
+  * *this field has a max length of 50
   */
-  public string $prodecureDefinitionName;
+  public string $studyEventName;
   
   /*
   * *this field has a max length of 100
@@ -613,24 +730,44 @@ public class ProcedureDefinition {
   public string $studyWorkflowVersion;
   
   /*
-  * the TaskSchedule which is representing the primary-/entry-workflow (estimated tasks) when executing this visit *this field is optional
-  */
-  public ?string $rootTaskScheduleId;
-  
-  /*
   * *this field is optional
   */
-  public ?float $billablePriceOnAbortedExecution;
+  public ?int $maxOccourrencesBeforeExclusion;
   
-  /*
-  * *this field is optional
-  */
-  public ?float $billablePriceOnCompletedExecution;
+  public bool $allowManualTrigger;
+  
+  public string $description;
   
   /*
   * *this field is optional (use null as value)
   */
-  public string $visitSpecificDocumentationUrl;
+  public string $evenSpecificDocumentationUrl;
+  
+}
+
+public class SubStudy {
+  
+  /*
+  * *this field has a max length of 50
+  */
+  public string $subStudyName;
+  
+  /*
+  * *this field has a max length of 100
+  */
+  public string $studyWorkflowName;
+  
+  /*
+  * *this field has a max length of 20
+  */
+  public string $studyWorkflowVersion;
+  
+}
+
+/*
+* Composite Key, which represents the primary identity of a ResearchStudyDefinition
+*/
+public class ResearchStudyDefinitionIdentity {
   
 }
 
@@ -671,11 +808,60 @@ public class ProcedureSchedule {
   
   public string $abortCausingEvents;
   
-  public List<InducedProcedure> $inducedProcedures;
+  public array $inducedProcedures;
   
-  public List<InducedSubProcedureSchedule> $inducedSubProcedureSchedules;
+  public array $inducedSubProcedureSchedules;
   
   public ProcedureCycleDefinition $cycleDefinition;
+  
+}
+
+public class TaskSchedule {
+  
+  public string $taskScheduleId;
+  
+  /*
+  * *this field has a max length of 100
+  */
+  public string $studyWorkflowName;
+  
+  /*
+  * *this field has a max length of 20
+  */
+  public string $studyWorkflowVersion;
+  
+  /*
+  * Name of the Workflow which is represented by this schedule - INVARIANT! because it is used to generate Identifers for induced executions!
+  */
+  public string $scheduleWorkflowName;
+  
+  public string $maxSkipsBeforeLost;
+  
+  public string $maxSubsequentSkipsBeforeLost;
+  
+  public string $maxLostsBeforeLtfuAbort;
+  
+  public string $maxSubsequentLostsBeforeLtfuAbort;
+  
+  public string $eventOnLtfuAbort;
+  
+  public string $eventOnCycleEnded;
+  
+  public string $eventOnAllCyclesEnded;
+  
+  public string $inducingEvents;
+  
+  public string $abortCausingEvents;
+  
+  public array $inducedDataRecordingTasks;
+  
+  public array $inducedDrugApplymentTasks;
+  
+  public array $inducedSubTaskSchedules;
+  
+  public array $inducedTreatmentTasks;
+  
+  public TaskCycleDefinition $cycleDefinition;
   
 }
 
@@ -736,208 +922,22 @@ public class ResearchStudyDefinition {
   */
   public string $caseReportFormUrl;
   
-  public List<Arm> $arms;
+  public array $arms;
   
-  public List<DataRecordingTaskDefinition> $dataRecordingTasks;
+  public array $dataRecordingTasks;
   
-  public List<DrugApplymentTaskDefinition> $drugApplymentTasks;
+  public array $drugApplymentTasks;
   
-  public List<ProcedureDefinition> $procedureDefinitions;
+  public array $procedureDefinitions;
   
-  public List<ProcedureSchedule> $procedureSchedules;
+  public array $procedureSchedules;
   
-  public List<TreatmentTaskDefinition> $treatmentTasks;
+  public array $treatmentTasks;
   
-  public List<TaskSchedule> $taskSchedules;
+  public array $taskSchedules;
   
-  public List<StudyEvent> $events;
+  public array $events;
   
-  public List<SubStudy> $subStudies;
-  
-}
-
-/*
-* Composite Key, which represents the primary identity of a ResearchStudyDefinition
-*/
-public class ResearchStudyDefinitionIdentity {
-  
-}
-
-public class StudyEvent {
-  
-  /*
-  * *this field has a max length of 50
-  */
-  public string $studyEventName;
-  
-  /*
-  * *this field has a max length of 100
-  */
-  public string $studyWorkflowName;
-  
-  /*
-  * *this field has a max length of 20
-  */
-  public string $studyWorkflowVersion;
-  
-  /*
-  * *this field is optional
-  */
-  public ?int $maxOccourrencesBeforeExclusion;
-  
-  public bool $allowManualTrigger;
-  
-  public string $description;
-  
-  /*
-  * *this field is optional (use null as value)
-  */
-  public string $evenSpecificDocumentationUrl;
-  
-}
-
-public class SubStudy {
-  
-  /*
-  * *this field has a max length of 50
-  */
-  public string $subStudyName;
-  
-  /*
-  * *this field has a max length of 100
-  */
-  public string $studyWorkflowName;
-  
-  /*
-  * *this field has a max length of 20
-  */
-  public string $studyWorkflowVersion;
-  
-}
-
-public class TaskCycleDefinition {
-  
-  public string $taskScheduleId;
-  
-  /*
-  * 0=InducementOfScheduleOrCycle: when the start of the last cycle was induced / -1=InducementOfPredessessor: when the last task or subschedule (based on the 'Position') of the previous cycle was induced. *items of sub-schedules are not relevant - when addressing a sub-schedule as predecessor, then only its entry will be used *this behaviour can be concretized via 'ReschedulingByEstimate'
-  */
-  public int $reschedulingOffsetFixpoint;
-  
-  /*
-  * estimated scheduling time relative to the ReschedulingBase
-  */
-  public int $reschedulingOffset;
-  
-  /*
-  * 'h'=Hours / 'm'=Minutes / 's'=Seconds
-  */
-  public string $reschedulingOffsetUnit;
-  
-  /*
-  * number of cycles (of null for a infinite number of cycles) *this field is optional
-  */
-  public ?int $cycleLimit;
-  
-  public bool $sharedSkipCounters;
-  
-  public bool $sharedLostCounters;
-  
-  /*
-  * If set to true, the offset calculation will be based on the ESTIMATED completion of the predecessor (see 'Fixpoint'). Otherwise, when set to false, the offset calculation will be based on the REAL completion (if recorded execution data is available during calculation) of the predecessor. *this will not evaluated, when the 'Fixpoint' is set to 0!
-  */
-  public bool $reschedulingByEstimate;
-  
-  /*
-  * -1: automatic, based on the usage of task numbers within the schedule
-  */
-  public int $increaseTaskNumberBasePerCycle;
-  
-}
-
-public class TaskSchedule {
-  
-  public string $taskScheduleId;
-  
-  /*
-  * *this field has a max length of 100
-  */
-  public string $studyWorkflowName;
-  
-  /*
-  * *this field has a max length of 20
-  */
-  public string $studyWorkflowVersion;
-  
-  /*
-  * Name of the Workflow which is represented by this schedule - INVARIANT! because it is used to generate Identifers for induced executions!
-  */
-  public string $scheduleWorkflowName;
-  
-  public string $maxSkipsBeforeLost;
-  
-  public string $maxSubsequentSkipsBeforeLost;
-  
-  public string $maxLostsBeforeLtfuAbort;
-  
-  public string $maxSubsequentLostsBeforeLtfuAbort;
-  
-  public string $eventOnLtfuAbort;
-  
-  public string $eventOnCycleEnded;
-  
-  public string $eventOnAllCyclesEnded;
-  
-  public string $inducingEvents;
-  
-  public string $abortCausingEvents;
-  
-  public List<InducedDataRecordingTask> $inducedDataRecordingTasks;
-  
-  public List<InducedDrugApplymentTask> $inducedDrugApplymentTasks;
-  
-  public List<InducedSubTaskSchedule> $inducedSubTaskSchedules;
-  
-  public List<InducedTreatmentTask> $inducedTreatmentTasks;
-  
-  public TaskCycleDefinition $cycleDefinition;
-  
-}
-
-public class TreatmentTaskDefinition {
-  
-  /*
-  * Name of the Definition - INVARIANT! because it is used to generate Identifers for induced executions! *this field has a max length of 50
-  */
-  public string $taskDefinitionName;
-  
-  /*
-  * *this field has a max length of 100
-  */
-  public string $studyWorkflowName;
-  
-  /*
-  * *this field has a max length of 20
-  */
-  public string $studyWorkflowVersion;
-  
-  /*
-  * *this field is optional
-  */
-  public ?float $billablePriceOnCompletedExecution;
-  
-  public string $shortDescription;
-  
-  /*
-  * *this field is optional (use null as value)
-  */
-  public string $taskSpecificDocumentationUrl;
-  
-  public string $treatmentDescription;
-  
-  /*
-  * *this field is optional (use null as value)
-  */
-  public string $importantNotices;
+  public array $subStudies;
   
 }
