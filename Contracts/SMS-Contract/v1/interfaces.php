@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF StudyManagement Contract v1.8.0.0 */
+/* based on ORSCF StudyManagement Contract v1.8.0.11747 */
 
 include 'models.php';
 
