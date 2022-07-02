@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF StudyManagement Contract v1.8.0.11747 */
+/* based on ORSCF StudyManagement Contract v1.8.0.11813 */
 
 include 'models.php';
 
@@ -31,7 +31,7 @@ public interface IInstituteMgmtService {
   *
   * @param $instituteUid
   */
-  function GetInstituteInfos(string $instituteUid): string;
+  function GetInstituteInfos(string $instituteUid): array;
   
   /*
   * ensures, that an institute with the given Uid exists and returns true, if it has been newly created

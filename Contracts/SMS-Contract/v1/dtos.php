@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF StudyManagement Contract v1.8.0.11747 */
+/* based on ORSCF StudyManagement Contract v1.8.0.11813 */
 
 include 'models.php';
 
@@ -94,8 +94,8 @@ public class GetInstituteInfosResponse {
   // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
   public string $fault = null;
   
-  // Return-Value of 'GetInstituteInfos' (String)
-  public string $return;
+  // Return-Value of 'GetInstituteInfos' (InstituteInfo[])
+  public array $return;
   
 }
 

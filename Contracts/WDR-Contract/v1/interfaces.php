@@ -1,7 +1,49 @@
 <?php
-/* based on ORSCF StudyWorkflowDefinition Contract v1.8.0.11747 */
+/* based on ORSCF StudyWorkflowDefinition Contract v1.9.0.11813 */
 
 include 'models.php';
+
+public interface IFhirQuestionaireConsumeService {
+  
+  /*
+  * Lists all FHIR Questionaires
+  *
+  * @param $result
+  */
+  function SearchFhirQuestionaires(array &$result);
+  
+  /*
+  * Exports a FHIR Questionaire by its given 'questionaireIdentifyingUrl' and 'questionaireVersion'
+  *
+  * @param $questionaireIdentifyingUrl
+  * @param $questionaireVersion
+  * @param $wasFound
+  * @param $fhirContent
+  */
+  function ExportFhirQuestionaire(string $questionaireIdentifyingUrl, string $questionaireVersion, bool &$wasFound, string &$fhirContent);
+  
+}
+
+public interface IFhirQuestionaireSubmissionService {
+  
+  /*
+  * Imports a FHIR Questionaire into the Repository The 'questionaireIdentifyingUrl' and 'questionaireVersion' will be taken from the 'fhirContent'
+  *
+  * @param $fhirContent
+  * @param $wasNew returns true, if this questionare was not already exisiting before the import
+  */
+  function ImportFhirQuestionaire(string $fhirContent, bool &$wasNew);
+  
+  /*
+  * Deletes a FHIR Questionaire by its given 'questionaireIdentifyingUrl' and 'questionaireVersion'
+  *
+  * @param $questionaireIdentifyingUrl
+  * @param $questionaireVersion
+  * @param $wasDeleted
+  */
+  function DeleteFhirQuestionaire(string $questionaireIdentifyingUrl, string $questionaireVersion, bool &$wasDeleted);
+  
+}
 
 public interface IWdrApiInfoService {
   
@@ -11,7 +53,7 @@ public interface IWdrApiInfoService {
   function GetApiVersion(): string;
   
   /*
-  * returns a list of API-features (there are several 'services' for different use cases, described by ORSCF) supported by this implementation. The following values are possible: 'WorkflowConsume', 'WorkflowDefinition',
+  * returns a list of API-features (there are several 'services' for different use cases, described by ORSCF) supported by this implementation. The following values are possible: 'WorkflowConsume', 'WorkflowSubmission', 'FhirQuestionaireConsume', 'FhirQuestionaireSubmission'
   */
   function GetCapabilities(): array;
   
@@ -32,15 +74,41 @@ public interface IWdrApiInfoService {
 public interface IWorkflowConsumeService {
   
   /*
-  * GetWorkflowDefintion
+  * Lists all ORSCF 'ResearchStudyDefinitions'
+  *
+  * @param $result
+  */
+  function SearchWorkflowDefinitions(array &$result);
+  
+  /*
+  * Exports a ORSCF 'ResearchStudyDefinition' by its given 'workflowDefinitionName' and 'workflowVersion'
   *
   * @param $workflowDefinitionName
   * @param $workflowVersion
+  * @param $wasFound
+  * @param $result
   */
-  function GetWorkflowDefintion(string $workflowDefinitionName, string $workflowVersion): ResearchStudyDefinition;
+  function ExportWorkflowDefinition(string $workflowDefinitionName, string $workflowVersion, bool &$wasFound, ResearchStudyDefinition &$result);
   
 }
 
-public interface IWorkflowDefinitionService {
+public interface IWorkflowSubmissionService {
+  
+  /*
+  * Imports a ORSCF 'ResearchStudyDefinition' into the Repository The 'workflowDefinitionName' and 'workflowVersion' will be taken from the definition itself
+  *
+  * @param $workflowDefinition
+  * @param $wasNew returns true, if this questionare was not already exisiting before the import
+  */
+  function ImportWorkflowDefinition(ResearchStudyDefinition $workflowDefinition, bool &$wasNew);
+  
+  /*
+  * Deletes a ORSCF 'ResearchStudyDefinition' by its given 'workflowDefinitionName' and 'workflowVersion'
+  *
+  * @param $workflowDefinitionName
+  * @param $workflowVersion
+  * @param $wasDeleted
+  */
+  function DeleteWorkflowDefinition(string $workflowDefinitionName, string $workflowVersion, bool &$wasDeleted);
   
 }

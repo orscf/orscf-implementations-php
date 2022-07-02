@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF VisitData Contract v1.7.0.11747 */
+/* based on ORSCF VisitData Contract v1.7.0.11813 */
 
 
 public class VisitFilter {
@@ -270,6 +270,21 @@ public class DataRecordingFields implements DataRecordingMetaRecord {
   public string $dataSchemaUrl;
   
   /*
+  * version of schema, which is addressed by the 'DataSchemaUrl'
+  */
+  public string $dataSchemaVersion;
+  
+  /*
+  * 'FhirQuestionaire' / 'XML' / 'CSV' / 'Custom'
+  */
+  public string $dataSchemaKind;
+  
+  /*
+  * Language of free-text information inside of the data content
+  */
+  public string $dataLanguage;
+  
+  /*
   * additional notes regarding this dedcated execution (supplied by the execution person) *this field is optional (use null as value)
   */
   public string $notesRegardingOutcome;
@@ -339,6 +354,21 @@ public class DataRecordingStructure implements DataRecordingFields {
   * schema-url of the data which were stored inside of the 'RecordedData' field
   */
   public string $dataSchemaUrl;
+  
+  /*
+  * version of schema, which is addressed by the 'DataSchemaUrl'
+  */
+  public string $dataSchemaVersion;
+  
+  /*
+  * 'FhirQuestionaire' / 'XML' / 'CSV' / 'Custom'
+  */
+  public string $dataSchemaKind;
+  
+  /*
+  * Language of free-text information inside of the data content
+  */
+  public string $dataLanguage;
   
   /*
   * additional notes regarding this dedcated execution (supplied by the execution person) *this field is optional (use null as value)
