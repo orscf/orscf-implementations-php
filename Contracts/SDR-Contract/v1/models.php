@@ -1,46 +1,56 @@
 <?php
-/* based on ORSCF SubjectData Contract v1.8.0.11813 */
+/* based on ORSCF SubjectData Contract v1.9.0.11833 */
 
 
-public class SubjectFilter {
-  
-  public ?string $studyUid;
-  
-  public ?string $siteUid;
+public class StringValueCriteria {
   
   /*
-  * identity of the patient which is usually a pseudonym from a corr. 'IdentiyManagementSystem' (the exact semantic is defined per study) *this field has a max length of 100
+  * The value to match.
   */
-  public string $subjectIdentifier;
+  public string $value;
   
   /*
-  * AS DECLARED BY <see href="https://www.hl7.org/fhir/valueset-research-subject-status.html">HL7.ResearchSubjectStatus</see>: candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn
+  * Enables, that the given value can just be a substring within the content of the target field. DEFAULT (if this is undefined or null) is 'false'.
   */
-  public string $status;
+  public bool $matchSubstring;
   
-  public ?string $minPeriodStart;
-  
-  public ?string $maxPeriodStart;
-  
-  public ?string $minPeriodEnd;
-  
-  public ?string $maxPeriodEnd;
-  
-  public string $assignedArm;
-  
-  public string $actualArm;
-  
-  public string $substudyName;
+}
+
+public class StringFieldFilter {
   
   /*
-  * This can be the ID ('surrogate-key') of the Partient record within a site specific patient management system. This MUST NOT be any natural key or plain readable name which exposes the identity of the patient!
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
   */
-  public string $actualSiteDefinedPatientIdentifier;
+  public array $includedValues;
   
   /*
-  * Custom fields as defined by the Service. Call 'GetCustomFieldDescriptors' to get information about supported/required fields. Any passed values for undefined fields will be ignored.
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
   */
-  public object $customFields;
+  public array $excludedValues;
+  
+  /*
+  * Enables, that the included and excluded values are processed case-insenstive. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $ignoreCasing;
+  
+  /*
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $negate;
+  
+}
+
+/*
+* Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
+*/
+public interface RangeMatchingBehaviour extends Enum {
+  
+}
+
+/*
+* Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
+*/
+public interface DateMatchingPrecision extends Enum {
   
 }
 
@@ -262,6 +272,101 @@ public class BatchableSubjectMutation {
   public ?string $periodStart;
   
   public ?string $periodEnd;
+  
+  /*
+  * Custom fields as defined by the Service. Call 'GetCustomFieldDescriptors' to get information about supported/required fields. Any passed values for undefined fields will be ignored.
+  */
+  public object $customFields;
+  
+}
+
+public class UidFieldFilter {
+  
+  /*
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $includedValues;
+  
+  /*
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $excludedValues;
+  
+  /*
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $negate;
+  
+}
+
+public class DateValueCriteria {
+  
+  /*
+  * The value to match.
+  */
+  public float $value;
+  
+  /*
+  * Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
+  */
+  public RangeMatchingBehaviour $matchingBehaviour;
+  
+  /*
+  * Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
+  */
+  public DateMatchingPrecision $matchingPrecision;
+  
+}
+
+public class DateFieldFilter {
+  
+  /*
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $includedValues;
+  
+  /*
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $excludedValues;
+  
+  /*
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $negate;
+  
+}
+
+public class SubjectFilter {
+  
+  public UidFieldFilter $studyUid;
+  
+  public UidFieldFilter $siteUid;
+  
+  /*
+  * identity of the patient which is usually a pseudonym from a corr. 'IdentiyManagementSystem' (the exact semantic is defined per study) *this field has a max length of 100
+  */
+  public StringFieldFilter $subjectIdentifier;
+  
+  /*
+  * AS DECLARED BY <see href="https://www.hl7.org/fhir/valueset-research-subject-status.html">HL7.ResearchSubjectStatus</see>: candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn
+  */
+  public StringFieldFilter $status;
+  
+  public DateFieldFilter $periodStart;
+  
+  public DateFieldFilter $periodEnd;
+  
+  public StringFieldFilter $assignedArm;
+  
+  public StringFieldFilter $actualArm;
+  
+  public StringFieldFilter $substudyName;
+  
+  /*
+  * This can be the ID ('surrogate-key') of the Partient record within a site specific patient management system. This MUST NOT be any natural key or plain readable name which exposes the identity of the patient!
+  */
+  public StringFieldFilter $actualSiteDefinedPatientIdentifier;
   
   /*
   * Custom fields as defined by the Service. Call 'GetCustomFieldDescriptors' to get information about supported/required fields. Any passed values for undefined fields will be ignored.

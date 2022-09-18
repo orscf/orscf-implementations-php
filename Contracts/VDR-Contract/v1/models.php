@@ -1,42 +1,56 @@
 <?php
-/* based on ORSCF VisitData Contract v1.7.0.11813 */
+/* based on ORSCF VisitData Contract v1.9.0.11833 */
 
 
-public class VisitFilter {
-  
-  public ?string $studyUid;
-  
-  public ?string $siteUid;
+public class StringValueCriteria {
   
   /*
-  * identity of the patient which is usually a pseudonym from a corr. 'IdentiyManagementSystem' (the exact semantic is defined per study) *this field has a max length of 100
+  * The value to match.
   */
-  public string $subjectIdentifier;
-  
-  public string $visitProcedureName;
+  public string $value;
   
   /*
-  * unique title of the visit execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)
+  * Enables, that the given value can just be a substring within the content of the target field. DEFAULT (if this is undefined or null) is 'false'.
   */
-  public string $visitExecutionTitle;
+  public bool $matchSubstring;
+  
+}
+
+public class StringFieldFilter {
   
   /*
-  * 0=Unscheduled / 1=Sheduled / 2=Executed / 3=AbortDuringExecution / 4=Skipped / 5=Removed
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
   */
-  public ?int $executionState;
-  
-  public ?string $minScheduledDateUtc;
-  
-  public ?string $maxScheduledDateUtc;
-  
-  public ?string $minExecutionDateUtc;
-  
-  public ?string $maxExecutionDateUtc;
+  public array $includedValues;
   
   /*
-  * Custom fields as defined by the Service. Call 'GetCustomFieldDescriptors' to get information about supported/required fields. Any passed values for undefined fields will be ignored.
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
   */
-  public object $customFields;
+  public array $excludedValues;
+  
+  /*
+  * Enables, that the included and excluded values are processed case-insenstive. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $ignoreCasing;
+  
+  /*
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $negate;
+  
+}
+
+/*
+* Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
+*/
+public interface RangeMatchingBehaviour extends Enum {
+  
+}
+
+/*
+* Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
+*/
+public interface DateMatchingPrecision extends Enum {
   
 }
 
@@ -237,6 +251,58 @@ public class BatchableVisitMutation {
   
 }
 
+public class UidFieldFilter {
+  
+  /*
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $includedValues;
+  
+  /*
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $excludedValues;
+  
+  /*
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $negate;
+  
+}
+
+public class NumericValueCriteria {
+  
+  /*
+  * The value to match.
+  */
+  public float $value;
+  
+  /*
+  * Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
+  */
+  public RangeMatchingBehaviour $matchingBehaviour;
+  
+}
+
+public class DateValueCriteria {
+  
+  /*
+  * The value to match.
+  */
+  public float $value;
+  
+  /*
+  * Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
+  */
+  public RangeMatchingBehaviour $matchingBehaviour;
+  
+  /*
+  * Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
+  */
+  public DateMatchingPrecision $matchingPrecision;
+  
+}
+
 public class DataRecordingFields implements DataRecordingMetaRecord {
   
   /*
@@ -315,6 +381,44 @@ public class DataRecordingFields implements DataRecordingMetaRecord {
   * This is an internal managed field (UNIX-Timestamp), which is related to the state of records dedicated to the database. It will be automatically set to the current time when a record is created, updated, archived or unarchived, but cannot be updated from outside and must not be mapped during data imports.
   */
   public int $modificationTimestampUtc;
+  
+}
+
+public class NumericFieldFilter {
+  
+  /*
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $includedValues;
+  
+  /*
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $excludedValues;
+  
+  /*
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $negate;
+  
+}
+
+public class DateFieldFilter {
+  
+  /*
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $includedValues;
+  
+  /*
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $excludedValues;
+  
+  /*
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $negate;
   
 }
 
@@ -466,5 +570,39 @@ public class VisitStructure implements VisitFields {
   * This is an internal managed field (UNIX-Timestamp), which is related to the state of records dedicated to the database. It will be automatically set to the current time when a record is created, updated, archived or unarchived, but cannot be updated from outside and must not be mapped during data imports.
   */
   public int $modificationTimestampUtc;
+  
+}
+
+public class VisitFilter {
+  
+  public UidFieldFilter $studyUid;
+  
+  public UidFieldFilter $siteUid;
+  
+  /*
+  * identity of the patient which is usually a pseudonym from a corr. 'IdentiyManagementSystem' (the exact semantic is defined per study) *this field has a max length of 100
+  */
+  public StringFieldFilter $subjectIdentifier;
+  
+  public StringFieldFilter $visitProcedureName;
+  
+  /*
+  * unique title of the visit execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)
+  */
+  public StringFieldFilter $visitExecutionTitle;
+  
+  /*
+  * 0=Unscheduled / 1=Sheduled / 2=Executed / 3=AbortDuringExecution / 4=Skipped / 5=Removed
+  */
+  public NumericFieldFilter $executionState;
+  
+  public DateFieldFilter $scheduledDateUtc;
+  
+  public DateFieldFilter $executionDateUtc;
+  
+  /*
+  * Custom fields as defined by the Service. Call 'GetCustomFieldDescriptors' to get information about supported/required fields. Any passed values for undefined fields will be ignored.
+  */
+  public object $customFields;
   
 }
