@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF VisitData Contract v1.9.0.0 */
+/* based on ORSCF VisitData Contract v1.9.1.11838 */
 
 include 'models.php';
 
@@ -329,6 +329,158 @@ public class GetSubsriptionsBySubscriberUrlResponse {
   
   // Return-Value of 'GetSubsriptionsBySubscriberUrl' (Guid[])
   public array $return;
+  
+}
+
+/*
+* Contains arguments for calling 'EnrollDataForVisitExplicit'.
+* Method: Enrolls recorded data to be stored as 'DataRecording'-Record related to a explicitly addressed Visit inside of this repository.
+* This goes ahead with an validation process for each enrollment, therefore a dataEnrollmentUid will be returned
+* which can be used to query the state of this process via 'GetValidationState'.
+*/
+public class EnrollDataForVisitExplicitRequest {
+  
+  // Required Argument for 'EnrollDataForVisitExplicit' (string): the ORSCF-Visit-UID to address the parent visit for which the given data should be submitted
+  #[Required]
+  public string $targetvisitUid;
+  
+  // Required Argument for 'EnrollDataForVisitExplicit' (string): title of the task execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)
+  #[Required]
+  public string $taskExecutionTitle;
+  
+  // Required Argument for 'EnrollDataForVisitExplicit' (string): the time, when the data was recorded
+  #[Required]
+  public string $executionDateTimeUtc;
+  
+  // Required Argument for 'EnrollDataForVisitExplicit' (string): 'FhirQuestionaire' / 'XML' / 'CSV' / 'Custom'
+  #[Required]
+  public string $dataSchemaKind;
+  
+  // Required Argument for 'EnrollDataForVisitExplicit' (string): the schema-url of the data which were stored inside of the 'RecordedData' field
+  #[Required]
+  public string $dataSchemaUrl;
+  
+  // Required Argument for 'EnrollDataForVisitExplicit' (string): version of schema, which is addressed by the 'DataSchemaUrl'
+  #[Required]
+  public string $dataSchemaVersion;
+  
+  // Required Argument for 'EnrollDataForVisitExplicit' (string): Language of free-text information inside of the data content
+  #[Required]
+  public string $dataLanguage;
+  
+  // Required Argument for 'EnrollDataForVisitExplicit' (string): RAW data, in the schema as defined at the 'DataSchemaUrl'
+  #[Required]
+  public string $recordedData;
+  
+}
+
+/*
+* Contains results from calling 'EnrollDataForVisitExplicit'.
+* Method: Enrolls recorded data to be stored as 'DataRecording'-Record related to a explicitly addressed Visit inside of this repository.
+* This goes ahead with an validation process for each enrollment, therefore a dataEnrollmentUid will be returned
+* which can be used to query the state of this process via 'GetValidationState'.
+*/
+public class EnrollDataForVisitExplicitResponse {
+  
+  // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
+  public string $fault = null;
+  
+  // Return-Value of 'EnrollDataForVisitExplicit' (Guid)
+  public string $return;
+  
+}
+
+/*
+* Contains arguments for calling 'EnrollDataForVisitImplicit'.
+* Method: Enrolls recorded data to be stored as 'DataRecording'-Record related to a visit inside of this repository
+* (which is implicitely resolved using the given 'visitExecutionTitle' and 'subjectIdentifier') .
+* This goes ahead with an validation process for each enrollment, therefore a dataEnrollmentUid will be returned
+* which can be used to query the state of this process via 'GetValidationState'.
+*/
+public class EnrollDataForVisitImplicitRequest {
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): the ORSCF-Study-UID which is used to lookup for the target visit for which the given data should be submitted
+  #[Required]
+  public string $studyUid;
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): the study related identity of the patient (usually a pseudonym) which is used to lookup for the target visit for which the given data should be submitted
+  #[Required]
+  public string $subjectIdentifier;
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): unique title of the visit execution as defined in the 'StudyWorkflowDefinition' which is used to lookup for the target visit for which the given data should be submitted
+  #[Required]
+  public string $visitExecutionTitle;
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): title of the task execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)
+  #[Required]
+  public string $taskExecutionTitle;
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): the time, when the data was recorded
+  #[Required]
+  public string $executionDateTimeUtc;
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): 'FhirQuestionaire' / 'XML' / 'CSV' / 'Custom'
+  #[Required]
+  public string $dataSchemaKind;
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): the schema-url of the data which were stored inside of the 'RecordedData' field
+  #[Required]
+  public string $dataSchemaUrl;
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): version of schema, which is addressed by the 'DataSchemaUrl'
+  #[Required]
+  public string $dataSchemaVersion;
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): Language of free-text information inside of the data content
+  #[Required]
+  public string $dataLanguage;
+  
+  // Required Argument for 'EnrollDataForVisitImplicit' (string): RAW data, in the schema as defined at the 'DataSchemaUrl'
+  #[Required]
+  public string $recordedData;
+  
+}
+
+/*
+* Contains results from calling 'EnrollDataForVisitImplicit'.
+* Method: Enrolls recorded data to be stored as 'DataRecording'-Record related to a visit inside of this repository
+* (which is implicitely resolved using the given 'visitExecutionTitle' and 'subjectIdentifier') .
+* This goes ahead with an validation process for each enrollment, therefore a dataEnrollmentUid will be returned
+* which can be used to query the state of this process via 'GetValidationState'.
+*/
+public class EnrollDataForVisitImplicitResponse {
+  
+  // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
+  public string $fault = null;
+  
+  // Return-Value of 'EnrollDataForVisitImplicit' (Guid)
+  public string $return;
+  
+}
+
+/*
+* Contains arguments for calling 'GetValidationState'.
+* Method: Providing the current validation state for a given data enrollment process
+*/
+public class GetValidationStateRequest {
+  
+  // Required Argument for 'GetValidationState' (string)
+  #[Required]
+  public string $dataEnrollmentUid;
+  
+}
+
+/*
+* Contains results from calling 'GetValidationState'.
+* Method: Providing the current validation state for a given data enrollment process
+*/
+public class GetValidationStateResponse {
+  
+  // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
+  public string $fault = null;
+  
+  // Return-Value of 'GetValidationState' (DataEnrollmentValidationState): Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
+  public DataEnrollmentValidationState $return;
   
 }
 

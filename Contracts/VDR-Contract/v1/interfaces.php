@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF VisitData Contract v1.9.0.0 */
+/* based on ORSCF VisitData Contract v1.9.1.11838 */
 
 include 'models.php';
 
@@ -87,6 +87,47 @@ public interface IVdrEventSubscriptionService {
   * @param $secret the (same) secret, which was given by the subscriber during the subscription setup
   */
   function GetSubsriptionsBySubscriberUrl(string $subscriberUrl, string $secret): array;
+  
+}
+
+public interface IDataEnrollmentService {
+  
+  /*
+  * Enrolls recorded data to be stored as 'DataRecording'-Record related to a explicitly addressed Visit inside of this repository. This goes ahead with an validation process for each enrollment, therefore a dataEnrollmentUid will be returned which can be used to query the state of this process via 'GetValidationState'.
+  *
+  * @param $targetvisitUid the ORSCF-Visit-UID to address the parent visit for which the given data should be submitted
+  * @param $taskExecutionTitle title of the task execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)
+  * @param $executionDateTimeUtc the time, when the data was recorded
+  * @param $dataSchemaKind 'FhirQuestionaire' / 'XML' / 'CSV' / 'Custom'
+  * @param $dataSchemaUrl the schema-url of the data which were stored inside of the 'RecordedData' field
+  * @param $dataSchemaVersion version of schema, which is addressed by the 'DataSchemaUrl'
+  * @param $dataLanguage Language of free-text information inside of the data content
+  * @param $recordedData RAW data, in the schema as defined at the 'DataSchemaUrl'
+  */
+  function EnrollDataForVisitExplicit(string $targetvisitUid, string $taskExecutionTitle, string $executionDateTimeUtc, string $dataSchemaKind, string $dataSchemaUrl, string $dataSchemaVersion, string $dataLanguage, string $recordedData): string;
+  
+  /*
+  * Enrolls recorded data to be stored as 'DataRecording'-Record related to a visit inside of this repository (which is implicitely resolved using the given 'visitExecutionTitle' and 'subjectIdentifier') . This goes ahead with an validation process for each enrollment, therefore a dataEnrollmentUid will be returned which can be used to query the state of this process via 'GetValidationState'.
+  *
+  * @param $studyUid the ORSCF-Study-UID which is used to lookup for the target visit for which the given data should be submitted
+  * @param $subjectIdentifier the study related identity of the patient (usually a pseudonym) which is used to lookup for the target visit for which the given data should be submitted
+  * @param $visitExecutionTitle unique title of the visit execution as defined in the 'StudyWorkflowDefinition' which is used to lookup for the target visit for which the given data should be submitted
+  * @param $taskExecutionTitle title of the task execution as defined in the 'StudyWorkflowDefinition' (originated from the sponsor)
+  * @param $executionDateTimeUtc the time, when the data was recorded
+  * @param $dataSchemaKind 'FhirQuestionaire' / 'XML' / 'CSV' / 'Custom'
+  * @param $dataSchemaUrl the schema-url of the data which were stored inside of the 'RecordedData' field
+  * @param $dataSchemaVersion version of schema, which is addressed by the 'DataSchemaUrl'
+  * @param $dataLanguage Language of free-text information inside of the data content
+  * @param $recordedData RAW data, in the schema as defined at the 'DataSchemaUrl'
+  */
+  function EnrollDataForVisitImplicit(string $studyUid, string $subjectIdentifier, string $visitExecutionTitle, string $taskExecutionTitle, string $executionDateTimeUtc, string $dataSchemaKind, string $dataSchemaUrl, string $dataSchemaVersion, string $dataLanguage, string $recordedData): string;
+  
+  /*
+  * Providing the current validation state for a given data enrollment process
+  *
+  * @param $dataEnrollmentUid
+  */
+  function GetValidationState(string $dataEnrollmentUid): DataEnrollmentValidationState;
   
 }
 

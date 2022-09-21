@@ -1,6 +1,15 @@
 <?php
-/* based on ORSCF VisitData Contract v1.9.0.0 */
+/* based on ORSCF VisitData Contract v1.9.1.11838 */
 
+
+public class UidValueCriteria {
+  
+  /*
+  * The value to match.
+  */
+  public string $value;
+  
+}
 
 public class StringValueCriteria {
   
@@ -16,30 +25,6 @@ public class StringValueCriteria {
   
 }
 
-public class StringFieldFilter {
-  
-  /*
-  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
-  */
-  public array $includedValues;
-  
-  /*
-  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
-  */
-  public array $excludedValues;
-  
-  /*
-  * Enables, that the included and excluded values are processed case-insenstive. DEFAULT (if this is undefined or null) is 'false'.
-  */
-  public bool $ignoreCasing;
-  
-  /*
-  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
-  */
-  public bool $negate;
-  
-}
-
 /*
 * Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
 */
@@ -47,10 +32,17 @@ public interface RangeMatchingBehaviour extends Enum {
   
 }
 
-/*
-* Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
-*/
-public interface DateMatchingPrecision extends Enum {
+public class DateValueCriteria {
+  
+  /*
+  * The value to match.
+  */
+  public string $value;
+  
+  /*
+  * Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
+  */
+  public RangeMatchingBehaviour $matchingBehaviour;
   
 }
 
@@ -79,6 +71,13 @@ public class VisitMetaRecord {
   * This is an internal managed field (UNIX-Timestamp), which is related to the state of records dedicated to the database. It will be automatically set to the current time when a record is created, updated, archived or unarchived, but cannot be updated from outside and must not be mapped during data imports.
   */
   public int $modificationTimestampUtc;
+  
+}
+
+/*
+* Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
+*/
+public interface DataEnrollmentValidationState extends Enum {
   
 }
 
@@ -270,12 +269,36 @@ public class UidFieldFilter {
   
 }
 
-public class NumericValueCriteria {
+public class StringFieldFilter {
+  
+  /*
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $includedValues;
+  
+  /*
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $excludedValues;
+  
+  /*
+  * Enables, that the included and excluded values are processed case-insenstive. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $ignoreCasing;
+  
+  /*
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $negate;
+  
+}
+
+public class IntegerValueCriteria {
   
   /*
   * The value to match.
   */
-  public float $value;
+  public int $value;
   
   /*
   * Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
@@ -284,22 +307,22 @@ public class NumericValueCriteria {
   
 }
 
-public class DateValueCriteria {
+public class DateFieldFilter {
   
   /*
-  * The value to match.
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
   */
-  public float $value;
+  public array $includedValues;
   
   /*
-  * Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
   */
-  public RangeMatchingBehaviour $matchingBehaviour;
+  public array $excludedValues;
   
   /*
-  * Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
   */
-  public DateMatchingPrecision $matchingPrecision;
+  public bool $negate;
   
 }
 
@@ -384,26 +407,7 @@ public class DataRecordingFields implements DataRecordingMetaRecord {
   
 }
 
-public class NumericFieldFilter {
-  
-  /*
-  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
-  */
-  public array $includedValues;
-  
-  /*
-  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
-  */
-  public array $excludedValues;
-  
-  /*
-  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
-  */
-  public bool $negate;
-  
-}
-
-public class DateFieldFilter {
+public class IntegerFieldFilter {
   
   /*
   * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
@@ -594,7 +598,7 @@ public class VisitFilter {
   /*
   * 0=Unscheduled / 1=Sheduled / 2=Executed / 3=AbortDuringExecution / 4=Skipped / 5=Removed
   */
-  public NumericFieldFilter $executionState;
+  public IntegerFieldFilter $executionState;
   
   public DateFieldFilter $scheduledDateUtc;
   

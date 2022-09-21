@@ -1,6 +1,15 @@
 <?php
-/* based on ORSCF SubjectData Contract v1.9.0.0 */
+/* based on ORSCF SubjectData Contract v1.9.1.11838 */
 
+
+public class UidValueCriteria {
+  
+  /*
+  * The value to match.
+  */
+  public string $value;
+  
+}
 
 public class StringValueCriteria {
   
@@ -16,41 +25,10 @@ public class StringValueCriteria {
   
 }
 
-public class StringFieldFilter {
-  
-  /*
-  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
-  */
-  public array $includedValues;
-  
-  /*
-  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
-  */
-  public array $excludedValues;
-  
-  /*
-  * Enables, that the included and excluded values are processed case-insenstive. DEFAULT (if this is undefined or null) is 'false'.
-  */
-  public bool $ignoreCasing;
-  
-  /*
-  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
-  */
-  public bool $negate;
-  
-}
-
 /*
 * Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
 */
 public interface RangeMatchingBehaviour extends Enum {
-  
-}
-
-/*
-* Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
-*/
-public interface DateMatchingPrecision extends Enum {
   
 }
 
@@ -299,22 +277,41 @@ public class UidFieldFilter {
   
 }
 
+public class StringFieldFilter {
+  
+  /*
+  * Specifies one or more values to match. DEFAULT (if this is undefined or null) will include everything (but NULL) to enable filtering based on 'excluded values'. An empty array which just has no elements will be treaded as valid input and results in no value matching, so this only makes sense when including NULL instead (if supported). An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $includedValues;
+  
+  /*
+  * Specifies one or more values to be removed from the result set which was evaulated using the 'included values'. DEFAULT (if this is undefined or null) will just leave the filtering based on 'included values'. An empty array which just has no elements will also be ignored. An array containing multiple elements, will require at least ONE of the criteria to match (OR-linked)!
+  */
+  public array $excludedValues;
+  
+  /*
+  * Enables, that the included and excluded values are processed case-insenstive. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $ignoreCasing;
+  
+  /*
+  * Negates the outcome of the whole filter. DEFAULT (if this is undefined or null) is 'false'.
+  */
+  public bool $negate;
+  
+}
+
 public class DateValueCriteria {
   
   /*
   * The value to match.
   */
-  public float $value;
+  public string $value;
   
   /*
   * Declares, how the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Equal'(1).
   */
   public RangeMatchingBehaviour $matchingBehaviour;
-  
-  /*
-  * Declares, which portion of the corresponding 'value' should be compared. DEFAULT (if this is undefined or null) is 'Date'(3).
-  */
-  public DateMatchingPrecision $matchingPrecision;
   
 }
 
