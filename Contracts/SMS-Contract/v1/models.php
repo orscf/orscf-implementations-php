@@ -1,5 +1,5 @@
 <?php
-/* based on ORSCF StudyManagement Contract v1.8.0.11838 */
+/* based on ORSCF StudyManagement Contract v1.8.0.11852 */
 
 
 public class InstituteInfo {

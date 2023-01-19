@@ -1,37 +1,6 @@
 <?php
-/* based on ORSCF IdentityManagement Contract v1.8.0.11838 */
+/* based on ORSCF IdentityManagement Contract v1.9.0.11852 */
 
-
-public class IdentityDetails {
-  
-  public string $firstName;
-  
-  public string $lastName;
-  
-  public string $email;
-  
-  public string $phone;
-  
-  public string $street;
-  
-  public string $houseNumber;
-  
-  public string $postCode;
-  
-  public string $city;
-  
-  public string $state;
-  
-  /*
-  * two letter ISO code
-  */
-  public string $country;
-  
-  public ?string $dateOfBirth;
-  
-  public ?string $dateOfDeath;
-  
-}
 
 public class ExtendedFieldDescriptor {
   
@@ -44,5 +13,29 @@ public class ExtendedFieldDescriptor {
   public string $inputDescription;
   
   public string $regularExpression;
+  
+}
+
+public class IdentityDetails {
+  
+  /*
+  * the firstname a person (named as in the HL7 standard)
+  */
+  public string $givenName;
+  
+  /*
+  * the lastname a person (named as in the HL7 standard)
+  */
+  public string $familyName;
+  
+  /*
+  * date in format 'yyyy-MM-dd' (must NOT be a partial date for this usecase!)
+  */
+  public string $birthDate;
+  
+  /*
+  * additional values for each 'extendedField' that is mandatory within (and specific to) the current IMS-System. To retrieve the declarations for such fields call 'GetExtendedFieldDescriptors'
+  */
+  public object $extendedFields;
   
 }

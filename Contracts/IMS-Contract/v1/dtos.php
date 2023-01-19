@@ -1,103 +1,111 @@
 <?php
-/* based on ORSCF IdentityManagement Contract v1.8.0.11838 */
+/* based on ORSCF IdentityManagement Contract v1.9.0.11852 */
 
 include 'models.php';
 
 /*
-* Contains arguments for calling 'RequestUnblindingToken'.
-* Method: returns an unblindingToken which is not activated
+* Contains arguments for calling 'GrantClearanceForUnblinding'.
 */
-public class RequestUnblindingTokenRequest {
+public class GrantClearanceForUnblindingRequest {
   
-  // Required Argument for 'RequestUnblindingToken' (string)
-  #[Required]
-  public string $researchStudyName;
-  
-  // Required Argument for 'RequestUnblindingToken' (string)
-  #[Required]
-  public string $subjectId;
-  
-  // Required Argument for 'RequestUnblindingToken' (string)
-  #[Required]
-  public string $reason;
-  
-  // Required Argument for 'RequestUnblindingToken' (string)
-  #[Required]
-  public string $requestingPerson;
-  
-}
-
-/*
-* Contains results from calling 'RequestUnblindingToken'.
-* Method: returns an unblindingToken which is not activated
-*/
-public class RequestUnblindingTokenResponse {
-  
-  // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
-  public string $fault = null;
-  
-  // Return-Value of 'RequestUnblindingToken' (String)
-  public string $return;
-  
-}
-
-/*
-* Contains arguments for calling 'GetUnblindingTokenState'.
-* Method: 0: not activated yet, 1=activated (can be used for 'UnblindSubject'), 2=expired/already used
-*/
-public class GetUnblindingTokenStateRequest {
-  
-  // Required Argument for 'GetUnblindingTokenState' (string)
+  // Required Argument for 'GrantClearanceForUnblinding' (string)
   #[Required]
   public string $unblindingToken;
   
+  // Required Argument for 'GrantClearanceForUnblinding' (array)
+  #[Required]
+  public array $pseudonymsToUnblind;
+  
+  // Required Argument for 'GrantClearanceForUnblinding' (string)
+  #[Required]
+  public string $grantedUnitl;
+  
 }
 
 /*
-* Contains results from calling 'GetUnblindingTokenState'.
-* Method: 0: not activated yet, 1=activated (can be used for 'UnblindSubject'), 2=expired/already used
+* Contains results from calling 'GrantClearanceForUnblinding'.
 */
-public class GetUnblindingTokenStateResponse {
+public class GrantClearanceForUnblindingResponse {
   
   // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
   public string $fault = null;
   
-  // Return-Value of 'GetUnblindingTokenState' (Int32)
+}
+
+/*
+* Contains arguments for calling 'HasClearanceForUnblinding'.
+* Method: Returns:
+* 1: if clearance granted /
+* 0: if no realtime response is possible (delayed approval)
+* -1: if a new unblindingToken is required (because the current has expired or has been repressed) /
+* -2: if the access is denied for addressed scope of data
+*/
+public class HasClearanceForUnblindingRequest {
+  
+  // Required Argument for 'HasClearanceForUnblinding' (string)
+  #[Required]
+  public string $unblindingToken;
+  
+  // Required Argument for 'HasClearanceForUnblinding' (array)
+  #[Required]
+  public array $pseudonymsToUnblind;
+  
+  // Required Argument for 'HasClearanceForUnblinding' (object): an optional container that can contain for example the ipadress or JWT token of the accessor or some MFA related information
+  #[Required]
+  public object $accessRelatedDetails;
+  
+}
+
+/*
+* Contains results from calling 'HasClearanceForUnblinding'.
+* Method: Returns:
+* 1: if clearance granted /
+* 0: if no realtime response is possible (delayed approval)
+* -1: if a new unblindingToken is required (because the current has expired or has been repressed) /
+* -2: if the access is denied for addressed scope of data
+*/
+public class HasClearanceForUnblindingResponse {
+  
+  // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
+  public string $fault = null;
+  
+  // Return-Value of 'HasClearanceForUnblinding' (Int32)
   public int $return;
   
 }
 
 /*
-* Contains arguments for calling 'UnblindSubject'.
-* Method: (only works with an activated unblindingOtp )
+* Contains arguments for calling 'EvaluateAge'.
+* Method: Calculates the age (only the integer Year) of several persons for a given date.
+* This is supporting the very common usecase to evaluate inclusion criteria for research studies where the date of birth is not present alongside of the medical data.
+* It allows for minimalist access disclosing the date of birth information (as happening when unblinding).
 */
-public class UnblindSubjectRequest {
+public class EvaluateAgeRequest {
   
-  // Required Argument for 'UnblindSubject' (string)
+  // Required Argument for 'EvaluateAge' (string)
   #[Required]
-  public string $researchStudyName;
+  public string $momentOfValuation;
   
-  // Required Argument for 'UnblindSubject' (string)
+  // Required Argument for 'EvaluateAge' (array)
   #[Required]
-  public string $subjectId;
-  
-  // Required Argument for 'UnblindSubject' (string)
-  #[Required]
-  public string $unblindingToken;
+  public array $pseudonymesToEvaluate;
   
 }
 
 /*
-* Contains results from calling 'UnblindSubject'.
-* Method: (only works with an activated unblindingOtp )
+* Contains results from calling 'EvaluateAge'.
+* Method: Calculates the age (only the integer Year) of several persons for a given date.
+* This is supporting the very common usecase to evaluate inclusion criteria for research studies where the date of birth is not present alongside of the medical data.
+* It allows for minimalist access disclosing the date of birth information (as happening when unblinding).
 */
-public class UnblindSubjectResponse {
+public class EvaluateAgeResponse {
+  
+  // Out-Argument of 'EvaluateAge' (array): Returns an array with the same amount of fields as the given 'pseudonymesToEvaluate'-array. If it was not possible to evalute the age beacuse of not present data, then the corresponding array-field will contain a value of -1!
+  #[Required]
+  public array $ages;
   
   // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
   public string $fault = null;
-  
-  // Return-Value of 'UnblindSubject' (IdentityDetails)
-  public IdentityDetails $return;
   
 }
 
@@ -129,7 +137,12 @@ public class GetApiVersionResponse {
 * Contains arguments for calling 'GetCapabilities'.
 * Method: returns a list of API-features (there are several 'services' for different use cases, described by ORSCF)
 * supported by this implementation. The following values are possible:
-* 'Pseudonymization', 'IdentityUnblinding',
+* 'ImsApiInfo',
+* 'Pseudonymization',
+* 'AgeEvaluation',
+* 'Unblinding',
+* 'UnblindingClearanceAwaiter'  (backend workflow for "PASSIVE-APPROVAL"),
+* 'UnblindingClearanceGranting' (backend workflow for "ACTIVE-APPROVAL")
 */
 public class GetCapabilitiesRequest {
   
@@ -139,7 +152,12 @@ public class GetCapabilitiesRequest {
 * Contains results from calling 'GetCapabilities'.
 * Method: returns a list of API-features (there are several 'services' for different use cases, described by ORSCF)
 * supported by this implementation. The following values are possible:
-* 'Pseudonymization', 'IdentityUnblinding',
+* 'ImsApiInfo',
+* 'Pseudonymization',
+* 'AgeEvaluation',
+* 'Unblinding',
+* 'UnblindingClearanceAwaiter'  (backend workflow for "PASSIVE-APPROVAL"),
+* 'UnblindingClearanceGranting' (backend workflow for "ACTIVE-APPROVAL")
 */
 public class GetCapabilitiesResponse {
   
@@ -220,7 +238,7 @@ public class GetOAuthTokenRequestUrlResponse {
 */
 public class GetExtendedFieldDescriptorsRequest {
   
-  // Optional Argument for 'GetExtendedFieldDescriptors' (string): Preferred language for the 'DisplayLabel' and 'InputDescription' fields of the returned descriptors.
+  // Optional Argument for 'GetExtendedFieldDescriptors' (string): Preferred language for the 'DisplayLabel' and 'InputDescription' fields of the returned descriptors. ONLY RELEVANT FOR THE UI!
   public string $languagePref;
   
 }
@@ -243,11 +261,7 @@ public class GetExtendedFieldDescriptorsResponse {
 */
 public class GetOrCreatePseudonymRequest {
   
-  // Required Argument for 'GetOrCreatePseudonym' (string): A UUID
-  #[Required]
-  public string $researchStudyUid;
-  
-  // Required Argument for 'GetOrCreatePseudonym' (string): the Firstname a the paticipant (named as in the HL7 standard)
+  // Required Argument for 'GetOrCreatePseudonym' (string): the Firstname a person (named as in the HL7 standard)
   #[Required]
   public string $givenName;
   
@@ -259,13 +273,9 @@ public class GetOrCreatePseudonymRequest {
   #[Required]
   public string $birthDate;
   
-  // Required Argument for 'GetOrCreatePseudonym' (object)
+  // Required Argument for 'GetOrCreatePseudonym' (object): additional values for each 'extendedField' that is mandatory within (and specific to) the current IMS-System. To retrieve the declarations for such fields call 'GetExtendedFieldDescriptors'
   #[Required]
   public object $extendedFields;
-  
-  // Required Argument for 'GetOrCreatePseudonym' (string): A UUID
-  #[Required]
-  public string $siteUid;
   
 }
 
@@ -295,10 +305,6 @@ public class GetOrCreatePseudonymResponse {
 */
 public class GetExisitingPseudonymRequest {
   
-  // Required Argument for 'GetExisitingPseudonym' (string): A UUID
-  #[Required]
-  public string $researchStudyUid;
-  
   // Required Argument for 'GetExisitingPseudonym' (string)
   #[Required]
   public string $givenName;
@@ -311,7 +317,7 @@ public class GetExisitingPseudonymRequest {
   #[Required]
   public string $birthDate;
   
-  // Required Argument for 'GetExisitingPseudonym' (object)
+  // Required Argument for 'GetExisitingPseudonym' (object): additional values for each 'extendedField' that is mandatory within (and specific to) the current IMS-System. To retrieve the declarations for such fields call 'GetExtendedFieldDescriptors'
   #[Required]
   public object $extendedFields;
   
@@ -331,5 +337,93 @@ public class GetExisitingPseudonymResponse {
   
   // Return-Value of 'GetExisitingPseudonym' (Boolean)
   public bool $return;
+  
+}
+
+/*
+* Contains arguments for calling 'RequestUnblindingToken'.
+* Method: Returns:
+* 1: if clearance granted (token can be DIRECTLY used to call 'TryUnblind') /
+* 0: if no realtime response is possible (delayed approval is outstanding)
+* -1: if a new unblindingToken is required (because the current has expired or has been repressed) /
+* -2: if the access is denied for addressed scope of data
+*/
+public class RequestUnblindingTokenRequest {
+  
+  // Required Argument for 'RequestUnblindingToken' (array)
+  #[Required]
+  public array $pseudonymsToUnblind;
+  
+  // Required Argument for 'RequestUnblindingToken' (string)
+  #[Required]
+  public string $requestReason;
+  
+  // Required Argument for 'RequestUnblindingToken' (string)
+  #[Required]
+  public string $requestBy;
+  
+}
+
+/*
+* Contains results from calling 'RequestUnblindingToken'.
+* Method: Returns:
+* 1: if clearance granted (token can be DIRECTLY used to call 'TryUnblind') /
+* 0: if no realtime response is possible (delayed approval is outstanding)
+* -1: if a new unblindingToken is required (because the current has expired or has been repressed) /
+* -2: if the access is denied for addressed scope of data
+*/
+public class RequestUnblindingTokenResponse {
+  
+  // Out-Argument of 'RequestUnblindingToken' (string)
+  #[Required]
+  public string $unblindingToken;
+  
+  // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
+  public string $fault = null;
+  
+  // Return-Value of 'RequestUnblindingToken' (Int32)
+  public int $return;
+  
+}
+
+/*
+* Contains arguments for calling 'TryUnblind'.
+* Method: Returns:
+* 1: on SUCCESS (unblindedIdentities should contain data) /
+* 0: if no realtime response is possible (delayed approval is outstanding)
+* -1: if a new unblindingToken is required (because the current has expired or has been repressed) /
+* -2: if the access is denied for addressed scope of data
+*/
+public class TryUnblindRequest {
+  
+  // Required Argument for 'TryUnblind' (string)
+  #[Required]
+  public string $unblindingToken;
+  
+  // Required Argument for 'TryUnblind' (array)
+  #[Required]
+  public array $pseudonymsToUnblind;
+  
+  // Required Argument for 'TryUnblind' (array)
+  #[Required]
+  public array $unblindedIdentities;
+  
+}
+
+/*
+* Contains results from calling 'TryUnblind'.
+* Method: Returns:
+* 1: on SUCCESS (unblindedIdentities should contain data) /
+* 0: if no realtime response is possible (delayed approval is outstanding)
+* -1: if a new unblindingToken is required (because the current has expired or has been repressed) /
+* -2: if the access is denied for addressed scope of data
+*/
+public class TryUnblindResponse {
+  
+  // This field contains error text equivalent to an Exception message! (note that only 'fault' XOR 'return' can have a value != null)
+  public string $fault = null;
+  
+  // Return-Value of 'TryUnblind' (Int32)
+  public int $return;
   
 }
